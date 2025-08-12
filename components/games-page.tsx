@@ -325,7 +325,7 @@ export default function GamesPage() {
 						{filteredAndSortedGames.map((game) => (
 							<div
 								key={game.id}
-								onClick={() => (window.location.href = `/game/${game.id}`)}
+								onClick={() => (window.location.href = `/games/${game.gameid}`)}
 								className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm shadow-sm rounded-lg overflow-hidden hover:bg-white/5 transition-all duration-300 cursor-pointer group'
 							>
 								{/* Game Image */}
@@ -348,7 +348,7 @@ export default function GamesPage() {
 										<button
 											onClick={(e) => {
 												e.stopPropagation()
-												window.location.href = `/game/${game.id}/servers`
+												window.location.href = `/games/${game.gameid}`
 											}}
 											className='border border-gray-200/10 bg-white/10 hover:bg-white/20 text-white rounded-lg p-4 transition-all duration-300 group/btn hover:scale-110 active:scale-95 shadow-lg'
 										>
@@ -384,7 +384,7 @@ export default function GamesPage() {
 						{filteredAndSortedGames.map((game) => (
 							<div
 								key={game.id}
-								onClick={() => (window.location.href = `/game/${game.id}`)}
+								onClick={() => (window.location.href = `/games/${game.gameid}`)}
 								className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm shadow-sm rounded-lg p-6 hover:bg-white/5 transition-all duration-300 cursor-pointer group'
 							>
 								<div className='flex items-center gap-6'>
@@ -436,7 +436,7 @@ export default function GamesPage() {
 									<button
 										onClick={(e) => {
 											e.stopPropagation()
-											window.location.href = `/game/${game.id}/servers`
+											window.location.href = `/game/${game.gameid}/servers`
 										}}
 										className='border border-gray-200/10 bg-white/10 hover:bg-white/20 text-white rounded-lg p-3 flex-shrink-0 transition-all duration-300 group/btn hover:scale-105 active:scale-95'
 									>
