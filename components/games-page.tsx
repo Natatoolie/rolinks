@@ -141,12 +141,12 @@ export default function GamesPage() {
 						{Array.from({ length: 10 }).map((_, i) => (
 							<div
 								key={i}
-								className='bg-gray-900/50 rounded-xl border border-gray-800 p-4 animate-pulse'
+								className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm shadow-sm rounded-lg p-4 animate-pulse'
 							>
-								<div className='aspect-square bg-gray-800 rounded-lg mb-4'></div>
-								<div className='h-4 bg-gray-800 rounded mb-2'></div>
-								<div className='h-3 bg-gray-800 rounded w-20 mb-1'></div>
-								<div className='h-3 bg-gray-800 rounded w-16'></div>
+								<div className='aspect-square bg-gray-200/10 rounded-lg mb-4'></div>
+								<div className='h-4 bg-gray-200/10 rounded mb-2'></div>
+								<div className='h-3 bg-gray-200/10 rounded w-20 mb-1'></div>
+								<div className='h-3 bg-gray-200/10 rounded w-16'></div>
 							</div>
 						))}
 					</div>
@@ -326,10 +326,10 @@ export default function GamesPage() {
 							<div
 								key={game.id}
 								onClick={() => (window.location.href = `/game/${game.id}`)}
-								className='bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl overflow-hidden hover:border-gray-700 hover:bg-gray-900/70 transition-all duration-300 cursor-pointer group'
+								className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm shadow-sm rounded-lg overflow-hidden hover:bg-white/5 transition-all duration-300 cursor-pointer group'
 							>
 								{/* Game Image */}
-								<div className='relative aspect-square bg-gray-800'>
+								<div className='relative aspect-square bg-white/[0.02] border-b border-gray-200/10'>
 									{getImageUrl(game.image) ? (
 										<Image
 											src={getImageUrl(game.image)!}
@@ -338,7 +338,7 @@ export default function GamesPage() {
 											className='object-cover'
 										/>
 									) : (
-										<div className='w-full h-full flex items-center justify-center text-gray-500'>
+										<div className='w-full h-full flex items-center justify-center text-gray-400'>
 											<Gamepad2 className='h-12 w-12' />
 										</div>
 									)}
@@ -350,18 +350,16 @@ export default function GamesPage() {
 												e.stopPropagation()
 												window.location.href = `/game/${game.id}/servers`
 											}}
-											className='group/btn relative bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 p-[2px] rounded-full overflow-hidden transform hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer shadow-2xl shadow-blue-500/40 hover:shadow-blue-500/60'
+											className='border border-gray-200/10 bg-white/10 hover:bg-white/20 text-white rounded-lg p-4 transition-all duration-300 group/btn hover:scale-110 active:scale-95 shadow-lg'
 										>
-											<div className='bg-gray-900 rounded-full p-4 group-hover/btn:bg-gray-800 transition-all duration-200'>
-												<ExternalLink className='h-6 w-6 text-blue-300 group-hover/btn:text-blue-200 transition-colors duration-200' />
-											</div>
+											<ExternalLink className='h-6 w-6 text-gray-300 group-hover/btn:text-white transition-colors duration-200' />
 										</button>
 									</div>
 								</div>
 
 								{/* Game Info */}
 								<div className='p-4'>
-									<h3 className='text-white font-semibold text-sm mb-2 truncate group-hover:text-blue-400 transition-colors'>
+									<h3 className='text-white font-semibold text-sm mb-2 truncate group-hover:text-white transition-colors'>
 										{game.name}
 									</h3>
 
@@ -382,26 +380,26 @@ export default function GamesPage() {
 						))}
 					</div>
 				) : (
-					<div className='space-y-3'>
+					<div className='space-y-6'>
 						{filteredAndSortedGames.map((game) => (
 							<div
 								key={game.id}
 								onClick={() => (window.location.href = `/game/${game.id}`)}
-								className='bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-4 hover:border-gray-700 hover:bg-gray-900/70 transition-all duration-300 cursor-pointer group'
+								className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm shadow-sm rounded-lg p-6 hover:bg-white/5 transition-all duration-300 cursor-pointer group'
 							>
-								<div className='flex items-center gap-4'>
+								<div className='flex items-center gap-6'>
 									{/* Game Image */}
-									<div className='w-16 h-16 rounded-lg overflow-hidden bg-gray-800 flex-shrink-0'>
+									<div className='w-16 h-16 rounded-lg overflow-hidden bg-white/[0.02] border border-gray-200/10 flex-shrink-0'>
 										{getImageUrl(game.image) ? (
 											<Image
 												src={getImageUrl(game.image)!}
 												alt={game.name}
-												width={64}
-												height={64}
+												width={256}
+												height={256}
 												className='w-full h-full object-cover'
 											/>
 										) : (
-											<div className='w-full h-full flex items-center justify-center text-gray-500'>
+											<div className='w-full h-full flex items-center justify-center text-gray-400'>
 												<Gamepad2 className='h-6 w-6' />
 											</div>
 										)}
@@ -409,10 +407,10 @@ export default function GamesPage() {
 
 									{/* Game Info */}
 									<div className='flex-1 min-w-0'>
-										<h3 className='text-white font-semibold text-lg mb-1 truncate group-hover:text-blue-400 transition-colors'>
+										<h3 className='text-white font-semibold text-lg mb-1 truncate group-hover:text-white transition-colors'>
 											{game.name}
 										</h3>
-										<div className='text-sm text-gray-500'>
+										<div className='text-sm text-gray-400'>
 											Game ID: {game.gameid}
 										</div>
 									</div>
@@ -440,11 +438,9 @@ export default function GamesPage() {
 											e.stopPropagation()
 											window.location.href = `/game/${game.id}/servers`
 										}}
-										className='group/btn relative bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 p-[1.5px] rounded-full overflow-hidden transform hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex-shrink-0 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40'
+										className='border border-gray-200/10 bg-white/10 hover:bg-white/20 text-white rounded-lg p-3 flex-shrink-0 transition-all duration-300 group/btn hover:scale-105 active:scale-95'
 									>
-										<div className='bg-gray-900 rounded-full p-2.5 group-hover/btn:bg-gray-800 transition-all duration-200'>
-											<ExternalLink className='h-5 w-5 text-blue-300 group-hover/btn:text-blue-200 transition-colors duration-200' />
-										</div>
+										<ExternalLink className='h-5 w-5 text-gray-300 group-hover/btn:text-white transition-colors duration-200' />
 									</button>
 								</div>
 							</div>
