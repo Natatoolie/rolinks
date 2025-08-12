@@ -170,6 +170,7 @@ export interface Game {
    */
   gameid: number;
   image: string | Media;
+  robux: number;
   /**
    * Number of private servers available
    */
@@ -290,6 +291,7 @@ export interface GamesSelect<T extends boolean = true> {
   name?: T;
   gameid?: T;
   image?: T;
+  robux?: T;
   serverCount?: T;
   isActive?: T;
   updatedAt?: T;

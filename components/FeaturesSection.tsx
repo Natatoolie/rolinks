@@ -1,45 +1,35 @@
 "use client"
 import { motion } from "framer-motion"
-import {
-	Zap,
-	Shield,
-	Users,
-	ArrowRight,
-	CheckCircle,
-	Sparkles,
-} from "lucide-react"
+import { Zap, Shield, Users, ArrowRight } from "lucide-react"
 import React from "react"
 
 const FeaturesSection = () => {
 	const features = [
 		{
-			icon: Zap,
-			title: "Lightning Fast",
+			icon: Users,
+			title: "Community Managed",
 			description:
-				"Instant server discovery with real-time player counts and status updates.",
-			color: "yellow",
-			gradient: "from-yellow-400 to-orange-500",
-			mockImage: "speed",
+				"Servers are managed and maintained by our dedicated community of players.",
+			color: "blue",
+			gradient: "from-blue-400 to-purple-500",
 			delay: 0,
 		},
 		{
 			icon: Shield,
-			title: "Verified Servers",
+			title: "Actively Checked",
 			description:
-				"All servers are verified for quality and safety. No scams, no malicious content.",
+				"Regular monitoring ensures all servers are functional and up running.",
 			color: "green",
 			gradient: "from-green-400 to-emerald-500",
-			mockImage: "security",
 			delay: 0.2,
 		},
 		{
-			icon: Users,
-			title: "Active Community",
+			icon: Zap,
+			title: "Up to Date",
 			description:
-				"Join thousands of players in our vibrant community of server enthusiasts.",
-			color: "blue",
-			gradient: "from-blue-400 to-purple-500",
-			mockImage: "community",
+				"Server information is constantly updated with the latest status and data.",
+			color: "yellow",
+			gradient: "from-yellow-400 to-orange-500",
 			delay: 0.4,
 		},
 	]
@@ -70,210 +60,6 @@ const FeaturesSection = () => {
 				damping: 15,
 			},
 		},
-	}
-
-	const MockImage = ({
-		type,
-		gradient,
-		color,
-	}: {
-		type: string
-		gradient: string
-		color: string
-	}) => {
-		switch (type) {
-			case "speed":
-				return (
-					<div className='relative w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900'>
-						<div
-							className={`absolute inset-0 bg-gradient-to-r ${gradient} opacity-20`}
-						></div>
-
-						{/* Animated speed lines */}
-						{[...Array(5)].map((_, i) => (
-							<motion.div
-								key={i}
-								className={`absolute top-1/2 h-1 bg-gradient-to-r ${gradient} rounded-full`}
-								style={{ width: `${60 - i * 10}px`, top: `${40 + i * 8}%` }}
-								animate={{
-									x: [-100, 200],
-									opacity: [0, 1, 0],
-								}}
-								transition={{
-									duration: 1.5,
-									repeat: Infinity,
-									delay: i * 0.1,
-									ease: "easeInOut",
-								}}
-							/>
-						))}
-
-						{/* Central glow */}
-						<motion.div
-							className={`absolute top-1/2 left-1/2 w-8 h-8 bg-gradient-to-r ${gradient} rounded-full`}
-							style={{ transform: "translate(-50%, -50%)" }}
-							animate={{
-								scale: [1, 1.2, 1],
-								opacity: [0.6, 1, 0.6],
-							}}
-							transition={{
-								duration: 2,
-								repeat: Infinity,
-								ease: "easeInOut",
-							}}
-						/>
-					</div>
-				)
-
-			case "security":
-				return (
-					<div className='relative w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900'>
-						<div
-							className={`absolute inset-0 bg-gradient-to-r ${gradient} opacity-20`}
-						></div>
-
-						{/* Shield outline */}
-						<motion.div
-							className='absolute top-1/2 left-1/2 w-16 h-20 border-2 border-green-400 rounded-t-full'
-							style={{
-								transform: "translate(-50%, -50%)",
-								clipPath:
-									"polygon(50% 0%, 0% 40%, 0% 100%, 50% 85%, 100% 100%, 100% 40%)",
-							}}
-							animate={{
-								borderColor: ["#4ade80", "#22c55e", "#4ade80"],
-								scale: [1, 1.05, 1],
-							}}
-							transition={{
-								duration: 3,
-								repeat: Infinity,
-								ease: "easeInOut",
-							}}
-						/>
-
-						{/* Checkmark */}
-						<motion.div
-							className='absolute top-1/2 left-1/2 text-green-400'
-							style={{ transform: "translate(-50%, -50%)" }}
-							initial={{ scale: 0, rotate: -180 }}
-							animate={{
-								scale: [0, 1.2, 1],
-								rotate: [-180, 0, 0],
-							}}
-							transition={{
-								duration: 1.5,
-								repeat: Infinity,
-								repeatDelay: 2,
-								ease: "easeOut",
-							}}
-						>
-							<CheckCircle size={24} />
-						</motion.div>
-
-						{/* Ripple effect */}
-						<motion.div
-							className='absolute top-1/2 left-1/2 border border-green-400/30 rounded-full'
-							style={{ transform: "translate(-50%, -50%)" }}
-							animate={{
-								scale: [0, 3],
-								opacity: [0.8, 0],
-							}}
-							transition={{
-								duration: 2,
-								repeat: Infinity,
-								ease: "easeOut",
-							}}
-						/>
-					</div>
-				)
-
-			case "community":
-				return (
-					<div className='relative w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900'>
-						<div
-							className={`absolute inset-0 bg-gradient-to-r ${gradient} opacity-20`}
-						></div>
-
-						{/* Animated user circles */}
-						{[...Array(6)].map((_, i) => {
-							const positions = [
-								{ x: "30%", y: "30%" },
-								{ x: "70%", y: "25%" },
-								{ x: "50%", y: "45%" },
-								{ x: "25%", y: "65%" },
-								{ x: "75%", y: "70%" },
-								{ x: "50%", y: "75%" },
-							]
-
-							return (
-								<motion.div
-									key={i}
-									className={`absolute w-3 h-3 bg-gradient-to-r ${gradient} rounded-full`}
-									style={{
-										left: positions[i].x,
-										top: positions[i].y,
-										transform: "translate(-50%, -50%)",
-									}}
-									animate={{
-										scale: [1, 1.3, 1],
-										opacity: [0.7, 1, 0.7],
-									}}
-									transition={{
-										duration: 2,
-										repeat: Infinity,
-										delay: i * 0.3,
-										ease: "easeInOut",
-									}}
-								/>
-							)
-						})}
-
-						{/* Connection lines */}
-						{[...Array(3)].map((_, i) => (
-							<motion.div
-								key={`line-${i}`}
-								className={`absolute h-px bg-gradient-to-r ${gradient} opacity-50`}
-								style={{
-									left: "30%",
-									right: "30%",
-									top: `${40 + i * 15}%`,
-									transform: "translateY(-50%)",
-								}}
-								animate={{
-									scaleX: [0, 1, 0],
-									opacity: [0, 0.6, 0],
-								}}
-								transition={{
-									duration: 2,
-									repeat: Infinity,
-									delay: i * 0.4,
-									ease: "easeInOut",
-								}}
-							/>
-						))}
-
-						{/* Central sparkle */}
-						<motion.div
-							className='absolute top-1/2 left-1/2 text-blue-400'
-							style={{ transform: "translate(-50%, -50%)" }}
-							animate={{
-								rotate: [0, 360],
-								scale: [0.8, 1.2, 0.8],
-							}}
-							transition={{
-								duration: 4,
-								repeat: Infinity,
-								ease: "easeInOut",
-							}}
-						>
-							<Sparkles size={16} />
-						</motion.div>
-					</div>
-				)
-
-			default:
-				return <div className='w-full h-32 bg-gray-800 rounded-lg'></div>
-		}
 	}
 
 	return (
@@ -334,15 +120,6 @@ const FeaturesSection = () => {
 								<motion.div
 									className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
 								/>
-
-								{/* Mock Image */}
-								<div className='mb-6'>
-									<MockImage
-										type={feature.mockImage}
-										gradient={feature.gradient}
-										color={feature.color}
-									/>
-								</div>
 
 								{/* Icon and Title */}
 								<div className='flex items-center mb-4'>

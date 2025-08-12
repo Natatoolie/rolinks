@@ -12,6 +12,7 @@
     "generate:types": "payload generate:types"
   },
   "dependencies": {
+    "@payload-auth/better-auth-plugin": "^1.1.8",
     "@payloadcms/db-mongodb": "^3.50.0",
     "@payloadcms/next": "^3.50.0",
     "@payloadcms/payload-cloud": "^3.50.0",
@@ -25,6 +26,7 @@
     "graphql": "^16.11.0",
     "lucide-react": "^0.537.0",
     "next": "15.4.6",
+    "nuqs": "^2.4.3",
     "payload": "^3.50.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",

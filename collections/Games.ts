@@ -35,6 +35,16 @@ export const Games: CollectionConfig = {
 		},
 
 		{
+			name: "robux", // required
+			label: "Robux Cost",
+			type: "number", // required
+			required: true,
+			admin: {
+				step: 1,
+			},
+		},
+
+		{
 			name: "serverCount",
 			type: "number",
 			label: "Server Count",
