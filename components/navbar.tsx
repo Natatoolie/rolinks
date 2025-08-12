@@ -1,7 +1,15 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Database, Menu, X, LogOut, User as UserIcon } from "lucide-react"
+import { Database, Menu, X, LogOut, User as UserIcon, Settings, ChevronDown } from "lucide-react"
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 // Discord icon component
 const DiscordIcon = ({ className }: { className?: string }) => (
@@ -9,7 +17,7 @@ const DiscordIcon = ({ className }: { className?: string }) => (
 		<path d='M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0002 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9554 2.4189-2.1568 2.4189Z' />
 	</svg>
 )
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import SearchDropdown from "@/components/search-dropdown"
 import Link from "next/link"
 import { authClient } from "@/utils/auth/auth-client"
@@ -24,34 +32,55 @@ const UserProfile = ({
 	user: any
 	onSignOut: () => void
 }) => (
-	<div className='flex items-center space-x-3'>
-		<div className='flex items-center space-x-2'>
-			{user ? (
-				<Image
-					src={user.image || ""}
-					alt={user.name || "User"}
-					width={256}
-					height={256}
-					className='w-8 h-8 rounded-full border-2 border-gray-600 hover:border-gray-500 transition-colors'
-				/>
-			) : (
-				<div className='w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center border-2 border-gray-600'>
-					<UserIcon className='w-4 h-4 text-gray-300' />
-				</div>
-			)}
-			<span className='text-white text-sm font-medium hidden xl:block'>
-				{user.name || user.email}
-			</span>
-		</div>
-		<Button
-			variant='ghost'
-			size='sm'
-			onClick={onSignOut}
-			className='text-gray-300 hover:text-white hover:bg-red-600/20 transition-all duration-300 group p-2'
+	<DropdownMenu>
+		<DropdownMenuTrigger asChild>
+			<Button
+				variant='ghost'
+				size='sm'
+				className='flex items-center space-x-2 text-gray-300 hover:text-white hover:bg-gray-800/60 transition-all duration-300 group px-3 py-2 rounded-lg'
+			>
+				{user ? (
+					<Image
+						src={user.image || ""}
+						alt={user.name || "User"}
+						width={256}
+						height={256}
+						className='w-8 h-8 rounded-full border-2 border-gray-600 group-hover:border-gray-500 transition-colors'
+					/>
+				) : (
+					<div className='w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center border-2 border-gray-600 group-hover:border-gray-500 transition-colors'>
+						<UserIcon className='w-4 h-4 text-gray-300' />
+					</div>
+				)}
+				<span className='text-white text-sm font-medium hidden xl:block'>
+					{user.name || user.email}
+				</span>
+				<ChevronDown className='w-4 h-4 group-hover:scale-110 transition-transform duration-300' />
+			</Button>
+		</DropdownMenuTrigger>
+		<DropdownMenuContent 
+			align='end' 
+			className='w-56 bg-gray-800 border-gray-700 shadow-xl'
 		>
-			<LogOut className='w-4 h-4 group-hover:scale-110 transition-transform duration-300' />
-		</Button>
-	</div>
+			<DropdownMenuLabel className='text-gray-300'>
+				{user.name || user.email}
+			</DropdownMenuLabel>
+			<DropdownMenuSeparator className='bg-gray-700' />
+			<DropdownMenuItem className='text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-gray-700 focus:text-white cursor-pointer'>
+				<Settings className='w-4 h-4 mr-2' />
+				Settings
+			</DropdownMenuItem>
+			<DropdownMenuSeparator className='bg-gray-700' />
+			<DropdownMenuItem 
+				onClick={onSignOut}
+				variant='destructive'
+				className='text-red-400 hover:bg-red-600/20 hover:text-red-300 focus:bg-red-600/20 focus:text-red-300 cursor-pointer'
+			>
+				<LogOut className='w-4 h-4 mr-2' />
+				Sign Out
+			</DropdownMenuItem>
+		</DropdownMenuContent>
+	</DropdownMenu>
 )
 
 export default function Navbar() {
@@ -126,18 +155,17 @@ export default function Navbar() {
 
 						{/* Desktop Auth Section - Only show on large screens */}
 						<div className='hidden lg:flex items-center flex-shrink-0'>
-							{isLoading ? (
-								<div className='w-8 h-8 animate-spin rounded-full border-2 border-gray-600 border-t-indigo-600'></div>
-							) : user ? (
+							{user ? (
 								<UserProfile user={user} onSignOut={handleSignOut} />
 							) : (
 								<Button
 									onClick={handleSignIn}
 									size='lg'
-									className='bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition-all duration-300 hover:scale-105 group'
+									disabled={isLoading}
+									className='bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-600/50 disabled:cursor-not-allowed text-white shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition-all duration-300 hover:scale-105 group disabled:hover:scale-100'
 								>
 									<DiscordIcon className='h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300' />
-									<span className='text-lg'>Login</span>
+									<span className='text-lg'>{isLoading ? 'Connecting...' : 'Login'}</span>
 								</Button>
 							)}
 						</div>
@@ -192,11 +220,7 @@ export default function Navbar() {
 
 								{/* Auth Section - Show for all mobile/tablet screens since desktop auth is hidden until lg */}
 								<div className='flex flex-col pt-4 border-t border-gray-700/50'>
-									{isLoading ? (
-										<div className='flex justify-center py-2'>
-											<div className='w-6 h-6 animate-spin rounded-full border-2 border-gray-600 border-t-indigo-600'></div>
-										</div>
-									) : user ? (
+									{user ? (
 										<div className='flex items-center justify-between py-2'>
 											<div className='flex items-center space-x-2'>
 												{user.image ? (
@@ -229,10 +253,11 @@ export default function Navbar() {
 										<Button
 											onClick={handleSignIn}
 											size='sm'
-											className='bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition-all duration-300 hover:scale-105 justify-start group'
+											disabled={isLoading}
+											className='bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-600/50 disabled:cursor-not-allowed text-white shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition-all duration-300 hover:scale-105 disabled:hover:scale-100 justify-start group'
 										>
 											<DiscordIcon className='h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300' />
-											Login
+											{isLoading ? 'Connecting...' : 'Login'}
 										</Button>
 									)}
 								</div>
