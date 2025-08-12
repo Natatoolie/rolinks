@@ -180,8 +180,8 @@ export default function GamePage({ params }: GamePageProps) {
 								<Image
 									src={getImageUrl(game.image)!}
 									alt={game.name}
-									width={320}
-									height={320}
+									width={512}
+									height={512}
 									className='w-full h-full object-cover'
 								/>
 							) : (
@@ -241,7 +241,7 @@ export default function GamePage({ params }: GamePageProps) {
 							</div>
 
 							{/* Game Details */}
-							<div className='flex flex-wrap gap-4 text-sm'>
+							<div className='flex flex-col items-center justify-center gap-4 mt-4 text-sm'>
 								<div className='text-gray-400'>
 									<span className='text-gray-500'>Game ID:</span> {game.gameid}
 								</div>

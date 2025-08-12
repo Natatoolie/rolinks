@@ -24,61 +24,55 @@ type SortOption = "name" | "serverCount" | "robux"
 type SortDirection = "asc" | "desc"
 
 export default function GamesPage() {
-	const [games, setGames] = useState<Game[]>([])
-	const [loading, setLoading] = useState(true)
-	const [searchQuery, setSearchQuery] = useQueryState("q", { defaultValue: "" })
+	const [gamesList, setGamesList] = useState<Game[]>([])
+	const [isLoading, setIsLoading] = useState(true)
+	const [searchTerm, setSearchTerm] = useQueryState("q", { defaultValue: "" })
 	const [viewMode, setViewMode] = useQueryState("view", {
 		defaultValue: "grid" as ViewMode,
-		parse: (value) => (value === "list" ? "list" : ("grid" as ViewMode)),
+		parse: (value) => (value === "list" ? "list" : "grid"),
 	})
-	const [sortBy, setSortBy] = useQueryState("sort", {
+	const [sortCriteria, setSortCriteria] = useQueryState("sort", {
 		defaultValue: "name" as SortOption,
 		parse: (value) =>
-			["name", "serverCount", "robux"].includes(value)
-				? (value as SortOption)
-				: "name",
+			["name", "serverCount", "robux"].includes(value) ? value : "name",
 	})
 	const [sortDirection, setSortDirection] = useQueryState("dir", {
 		defaultValue: "asc" as SortDirection,
-		parse: (value) => (value === "desc" ? "desc" : ("asc" as SortDirection)),
+		parse: (value) => (value === "desc" ? "desc" : "asc"),
 	})
 
-	// Load games on mount
 	useEffect(() => {
 		const loadGames = async () => {
 			try {
-				setLoading(true)
+				setIsLoading(true)
 				const response = await fetchGames()
-				setGames(response.docs || [])
+				setGamesList(response.docs || [])
 			} catch (error) {
 				console.error("Error fetching games:", error)
 			} finally {
-				setLoading(false)
+				setIsLoading(false)
 			}
 		}
 
 		loadGames()
 	}, [])
 
-	// Helper function to get image URL
 	const getImageUrl = (image: string | Media | undefined): string | null => {
 		if (!image) return null
 		return typeof image === "string" ? image : image.url || null
 	}
 
-	// Filter and sort games
-	const filteredAndSortedGames = useMemo(() => {
-		const filtered = games.filter(
+	const sortedAndFilteredGames = useMemo(() => {
+		const filteredGames = gamesList.filter(
 			(game) =>
-				game.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				game.gameid.toString().includes(searchQuery)
+				game.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				game.gameid.toString().includes(searchTerm)
 		)
 
-		// Sort games
-		filtered.sort((a, b) => {
+		filteredGames.sort((a, b) => {
 			let aValue: string | number, bValue: string | number
 
-			switch (sortBy) {
+			switch (sortCriteria) {
 				case "name":
 					aValue = a.name.toLowerCase()
 					bValue = b.name.toLowerCase()
@@ -100,23 +94,22 @@ export default function GamesPage() {
 			return 0
 		})
 
-		return filtered
-	}, [games, searchQuery, sortBy, sortDirection])
+		return filteredGames
+	}, [gamesList, searchTerm, sortCriteria, sortDirection])
 
-	const toggleSort = (option: SortOption) => {
-		if (sortBy === option) {
+	const handleSortToggle = (option: SortOption) => {
+		if (sortCriteria === option) {
 			setSortDirection(sortDirection === "asc" ? "desc" : "asc")
 		} else {
-			setSortBy(option)
+			setSortCriteria(option)
 			setSortDirection("asc")
 		}
 	}
 
-	if (loading) {
+	if (isLoading) {
 		return (
 			<div className='min-h-screen bg-gray-950'>
 				<Navbar />
-				{/* Background pattern */}
 				<div className='absolute inset-0 opacity-[0.02]'>
 					<div
 						className='absolute inset-0'
@@ -158,7 +151,6 @@ export default function GamesPage() {
 	return (
 		<div className='min-h-screen bg-gray-950'>
 			<Navbar />
-			{/* Background pattern */}
 			<div className='absolute inset-0 opacity-[0.02]'>
 				<div
 					className='absolute inset-0'
@@ -173,34 +165,29 @@ export default function GamesPage() {
 			</div>
 
 			<div className='relative z-10 container mx-auto px-4 py-8'>
-				{/* Header */}
 				<div className='mb-8'>
 					<h1 className='text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight'>
 						Browse Games
 					</h1>
 					<p className='text-gray-400 text-lg max-w-2xl'>
-						Discover and explore {games.length} games with private servers
+						Discover and explore {gamesList.length} games with private servers
 						available.
 					</p>
 				</div>
 
-				{/* Search and Controls */}
 				<div className='mb-8 space-y-4'>
-					{/* Search Bar */}
 					<div className='flex items-center border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm rounded-lg px-4 py-3 max-w-md focus-within:border-gray-200/20 transition-colors shadow-sm'>
 						<Search className='h-5 w-5 text-gray-400 mr-3 flex-shrink-0' />
 						<input
 							type='text'
 							placeholder='Search games by name or ID...'
-							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
+							value={searchTerm}
+							onChange={(e) => setSearchTerm(e.target.value)}
 							className='bg-transparent text-white placeholder-gray-400 outline-none flex-1'
 						/>
 					</div>
 
-					{/* Controls Row */}
 					<div className='flex flex-wrap items-center gap-3 lg:gap-4'>
-						{/* View Mode Toggle */}
 						<div className='flex items-center bg-gray-900/60 backdrop-blur-sm rounded-full p-1 border border-gray-700/50 shadow-lg'>
 							<button
 								onClick={() => setViewMode("grid")}
@@ -226,23 +213,22 @@ export default function GamesPage() {
 							</button>
 						</div>
 
-						{/* Sort Controls */}
 						<div className='flex items-center bg-gray-900/40 backdrop-blur-sm rounded-full border border-gray-700/30 overflow-hidden'>
 							<span className='text-xs text-gray-400 font-medium px-4 py-2 bg-gray-800/30'>
 								Sort by
 							</span>
 							<div className='flex items-center'>
 								<button
-									onClick={() => toggleSort("name")}
+									onClick={() => handleSortToggle("name")}
 									className={cn(
 										"px-3 py-2 text-sm font-medium transition-all duration-200 flex items-center gap-1.5",
-										sortBy === "name"
+										sortCriteria === "name"
 											? "bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-400 border-l border-emerald-500/30"
 											: "text-gray-300 hover:text-white hover:bg-gray-800/40 border-l border-gray-700/50"
 									)}
 								>
 									Name
-									{sortBy === "name" && (
+									{sortCriteria === "name" && (
 										<div className='flex items-center'>
 											{sortDirection === "asc" ? (
 												<SortAsc className='h-3 w-3 text-emerald-400' />
@@ -253,16 +239,16 @@ export default function GamesPage() {
 									)}
 								</button>
 								<button
-									onClick={() => toggleSort("serverCount")}
+									onClick={() => handleSortToggle("serverCount")}
 									className={cn(
 										"px-3 py-2 text-sm font-medium transition-all duration-200 flex items-center gap-1.5",
-										sortBy === "serverCount"
+										sortCriteria === "serverCount"
 											? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-400 border-l border-purple-500/30"
 											: "text-gray-300 hover:text-white hover:bg-gray-800/40 border-l border-gray-700/50"
 									)}
 								>
 									Servers
-									{sortBy === "serverCount" && (
+									{sortCriteria === "serverCount" && (
 										<div className='flex items-center'>
 											{sortDirection === "asc" ? (
 												<SortAsc className='h-3 w-3 text-purple-400' />
@@ -273,16 +259,16 @@ export default function GamesPage() {
 									)}
 								</button>
 								<button
-									onClick={() => toggleSort("robux")}
+									onClick={() => handleSortToggle("robux")}
 									className={cn(
 										"px-3 py-2 text-sm font-medium transition-all duration-200 flex items-center gap-1.5",
-										sortBy === "robux"
+										sortCriteria === "robux"
 											? "bg-gradient-to-r from-gray-500/20 to-gray-400/20 text-white border-l border-gray-500/30"
 											: "text-gray-300 hover:text-white hover:bg-gray-800/40 border-l border-gray-700/50"
 									)}
 								>
 									Robux
-									{sortBy === "robux" && (
+									{sortCriteria === "robux" && (
 										<div className='flex items-center'>
 											{sortDirection === "asc" ? (
 												<SortAsc className='h-3 w-3 text-white' />
@@ -295,40 +281,37 @@ export default function GamesPage() {
 							</div>
 						</div>
 
-						{/* Results Count */}
 						<div className='ml-auto bg-gray-900/30 backdrop-blur-sm border border-gray-700/30 rounded-full px-4 py-2'>
 							<span className='text-sm font-medium text-gray-300'>
-								{filteredAndSortedGames.length}
+								{sortedAndFilteredGames.length}
 							</span>
 							<span className='text-xs text-gray-500 ml-1'>
-								of {games.length} games
+								of {gamesList.length} games
 							</span>
 						</div>
 					</div>
 				</div>
 
-				{/* Games Display */}
-				{filteredAndSortedGames.length === 0 ? (
+				{sortedAndFilteredGames.length === 0 ? (
 					<div className='text-center py-16'>
 						<Gamepad2 className='h-16 w-16 text-gray-600 mx-auto mb-4' />
 						<h3 className='text-xl font-medium text-gray-400 mb-2'>
 							No games found
 						</h3>
 						<p className='text-gray-500'>
-							{searchQuery
-								? `No games match "${searchQuery}"`
+							{searchTerm
+								? `No games match "${searchTerm}"`
 								: "No games available"}
 						</p>
 					</div>
 				) : viewMode === "grid" ? (
 					<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6'>
-						{filteredAndSortedGames.map((game) => (
+						{sortedAndFilteredGames.map((game) => (
 							<div
 								key={game.id}
 								onClick={() => (window.location.href = `/games/${game.gameid}`)}
 								className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm shadow-sm rounded-lg overflow-hidden hover:bg-white/5 transition-all duration-300 cursor-pointer group'
 							>
-								{/* Game Image */}
 								<div className='relative aspect-square bg-white/[0.02] border-b border-gray-200/10'>
 									{getImageUrl(game.image) ? (
 										<Image
@@ -343,7 +326,6 @@ export default function GamesPage() {
 										</div>
 									)}
 
-									{/* Hover overlay */}
 									<div className='absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center backdrop-blur-sm'>
 										<button
 											onClick={(e) => {
@@ -357,7 +339,6 @@ export default function GamesPage() {
 									</div>
 								</div>
 
-								{/* Game Info */}
 								<div className='p-4'>
 									<h3 className='text-white font-semibold text-sm mb-2 truncate group-hover:text-white transition-colors'>
 										{game.name}
@@ -381,14 +362,13 @@ export default function GamesPage() {
 					</div>
 				) : (
 					<div className='space-y-6'>
-						{filteredAndSortedGames.map((game) => (
+						{sortedAndFilteredGames.map((game) => (
 							<div
 								key={game.id}
 								onClick={() => (window.location.href = `/games/${game.gameid}`)}
 								className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm shadow-sm rounded-lg p-6 hover:bg-white/5 transition-all duration-300 cursor-pointer group'
 							>
 								<div className='flex items-center gap-6'>
-									{/* Game Image */}
 									<div className='w-16 h-16 rounded-lg overflow-hidden bg-white/[0.02] border border-gray-200/10 flex-shrink-0'>
 										{getImageUrl(game.image) ? (
 											<Image
@@ -405,7 +385,6 @@ export default function GamesPage() {
 										)}
 									</div>
 
-									{/* Game Info */}
 									<div className='flex-1 min-w-0'>
 										<h3 className='text-white font-semibold text-lg mb-1 truncate group-hover:text-white transition-colors'>
 											{game.name}
@@ -415,7 +394,6 @@ export default function GamesPage() {
 										</div>
 									</div>
 
-									{/* Stats */}
 									<div className='flex items-center gap-6 text-sm'>
 										<div className='flex items-center text-gray-400'>
 											<Users className='h-4 w-4 mr-2' />
