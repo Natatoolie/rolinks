@@ -9,6 +9,7 @@ export const betterAuthOptions: BetterAuthOptions = {
 
 	emailAndPassword: {
 		enabled: false,
+		disableSignUp: true,
 	},
 
 	socialProviders: {
@@ -20,14 +21,10 @@ export const betterAuthOptions: BetterAuthOptions = {
 
 	user: {
 		modelName: "users",
-		fields: {},
 	},
 
 	session: {
 		modelName: "sessions",
-		fields: {
-			userId: "user",
-		},
 	},
 
 	verification: {
@@ -35,7 +32,7 @@ export const betterAuthOptions: BetterAuthOptions = {
 	},
 
 	account: {
-		modelName: "accounts",
+		modelName: "account",
 	},
 
 	//... other options

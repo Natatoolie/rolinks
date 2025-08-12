@@ -18,10 +18,13 @@ import type { CollectionConfig } from "payload"
 
 const Users: CollectionConfig = {
 	slug: "users",
+	custom: {
+		id: "email",
+	},
 	admin: {
 		useAsTitle: "name",
 	},
-	auth: true,
+
 	fields: [
 		{
 			name: "name",
@@ -45,8 +48,8 @@ const Users: CollectionConfig = {
 		},
 		{
 			name: "image",
-			type: "upload",
-			relationTo: "media",
+			type: "text",
+			// relationTo: "media",
 		},
 	],
 	timestamps: true,
