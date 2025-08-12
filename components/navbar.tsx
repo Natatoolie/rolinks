@@ -12,6 +12,8 @@ const DiscordIcon = ({ className }: { className?: string }) => (
 import { useState } from "react"
 import SearchDropdown from "@/components/search-dropdown"
 import Link from "next/link"
+import { authClient } from "@/utils/auth/auth-client"
+import { signInSocial } from "@/utils/actions/signIn"
 
 export default function Navbar() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -65,6 +67,11 @@ export default function Navbar() {
 						{/* Desktop Auth Button - Only show on large screens */}
 						<div className='hidden lg:flex items-center flex-shrink-0'>
 							<Button
+								onClick={async () => {
+									await authClient.signIn.social({
+										provider: "discord",
+									})
+								}}
 								size='lg'
 								className=' bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition-all duration-300 hover:scale-105 group'
 							>

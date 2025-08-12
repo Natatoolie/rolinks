@@ -11,6 +11,8 @@ import { Users } from "./collections/Users"
 import { Media } from "./collections/Media"
 import { Games } from "./collections/Games"
 
+import betterAuthCollections from "./collections/generated/schema"
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -21,7 +23,7 @@ export default buildConfig({
 			baseDir: path.resolve(dirname),
 		},
 	},
-	collections: [Users, Media, Games],
+	collections: [Media, Games, ...betterAuthCollections],
 	editor: lexicalEditor(),
 	secret: process.env.PAYLOAD_SECRET || "",
 	typescript: {

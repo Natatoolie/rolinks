@@ -67,18 +67,24 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
     media: Media;
     games: Game;
+    users: User;
+    sessions: Session;
+    account: Account;
+    verifications: Verification;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     games: GamesSelect<false> | GamesSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
+    sessions: SessionsSelect<false> | SessionsSelect<true>;
+    account: AccountSelect<false> | AccountSelect<true>;
+    verifications: VerificationsSelect<false> | VerificationsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -114,30 +120,6 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: string;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -184,15 +166,83 @@ export interface Game {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: string;
+  name: string;
+  emailVerified: boolean;
+  image?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions".
+ */
+export interface Session {
+  id: string;
+  expiresAt: string;
+  token: string;
+  ipAddress?: string | null;
+  userAgent?: string | null;
+  userId: string | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "account".
+ */
+export interface Account {
+  id: string;
+  accountId: string;
+  providerId: string;
+  userId: string | User;
+  accessToken?: string | null;
+  refreshToken?: string | null;
+  idToken?: string | null;
+  accessTokenExpiresAt?: string | null;
+  refreshTokenExpiresAt?: string | null;
+  scope?: string | null;
+  password?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "verifications".
+ */
+export interface Verification {
+  id: string;
+  identifier: string;
+  value: string;
+  expiresAt: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
   id: string;
   document?:
-    | ({
-        relationTo: 'users';
-        value: string | User;
-      } | null)
     | ({
         relationTo: 'media';
         value: string | Media;
@@ -200,6 +250,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'games';
         value: string | Game;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: string | User;
+      } | null)
+    | ({
+        relationTo: 'sessions';
+        value: string | Session;
+      } | null)
+    | ({
+        relationTo: 'account';
+        value: string | Account;
+      } | null)
+    | ({
+        relationTo: 'verifications';
+        value: string | Verification;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -245,28 +311,6 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
- */
-export interface UsersSelect<T extends boolean = true> {
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -294,6 +338,73 @@ export interface GamesSelect<T extends boolean = true> {
   robux?: T;
   serverCount?: T;
   isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  emailVerified?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions_select".
+ */
+export interface SessionsSelect<T extends boolean = true> {
+  expiresAt?: T;
+  token?: T;
+  ipAddress?: T;
+  userAgent?: T;
+  userId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "account_select".
+ */
+export interface AccountSelect<T extends boolean = true> {
+  accountId?: T;
+  providerId?: T;
+  userId?: T;
+  accessToken?: T;
+  refreshToken?: T;
+  idToken?: T;
+  accessTokenExpiresAt?: T;
+  refreshTokenExpiresAt?: T;
+  scope?: T;
+  password?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "verifications_select".
+ */
+export interface VerificationsSelect<T extends boolean = true> {
+  identifier?: T;
+  value?: T;
+  expiresAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }
