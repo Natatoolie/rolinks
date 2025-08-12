@@ -12,7 +12,6 @@
     "generate:types": "payload generate:types"
   },
   "dependencies": {
-    "@payload-auth/better-auth-plugin": "^1.1.8",
     "@payloadcms/db-mongodb": "^3.50.0",
     "@payloadcms/next": "^3.50.0",
     "@payloadcms/payload-cloud": "^3.50.0",
