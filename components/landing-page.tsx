@@ -76,7 +76,6 @@ export default function LandingPage() {
 							private servers.
 						</p>
 					</header>
-
 					{/* Hero Section */}
 					{/* Featured Games Carousel */}
 					<section className='mb-20'>
@@ -97,13 +96,10 @@ export default function LandingPage() {
 							</Link>
 						</div>
 					</section>
-
 					{/* Enhanced Features Section */}
 					<FeaturesSection />
-
 					{/* Social Links */}
 					<SocialSection />
-
 					{/* CTA Section */}
 					<section className='text-center'>
 						<div className='bg-gray-900 rounded-2xl p-8 border border-gray-800'>
@@ -122,7 +118,6 @@ export default function LandingPage() {
 							</Button>
 						</div>
 					</section>
-
 					{/* Footer */}
 					<footer className='mt-16 pt-8 border-t border-gray-800 text-center text-gray-500'>
 						<p>

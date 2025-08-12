@@ -1,7 +1,15 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Database, Menu, X, LogOut, User as UserIcon, Settings, ChevronDown } from "lucide-react"
+import {
+	Database,
+	Menu,
+	X,
+	LogOut,
+	User as UserIcon,
+	Settings,
+	ChevronDown,
+} from "lucide-react"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -36,8 +44,8 @@ const UserProfile = ({
 		<DropdownMenuTrigger asChild>
 			<Button
 				variant='ghost'
-				size='sm'
-				className='flex items-center space-x-2 text-gray-300 hover:text-white hover:bg-gray-800/60 transition-all duration-300 group px-3 py-2 rounded-lg'
+				size='default'
+				className='flex items-center space-x-2 text-gray-400 hover:text-white border border-none  backdrop-blur-sm hover:bg-white/5 transition-all duration-300 group px-3 py-2 rounded-lg shadow-sm'
 			>
 				{user ? (
 					<Image
@@ -58,23 +66,28 @@ const UserProfile = ({
 				<ChevronDown className='w-4 h-4 group-hover:scale-110 transition-transform duration-300' />
 			</Button>
 		</DropdownMenuTrigger>
-		<DropdownMenuContent 
-			align='end' 
-			className='w-56 bg-gray-800 border-gray-700 shadow-xl'
+		<DropdownMenuContent
+			align='end'
+			className='w-56 border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm text-white shadow-xl'
 		>
-			<DropdownMenuLabel className='text-gray-300'>
+			<DropdownMenuLabel className='text-white'>
 				{user.name || user.email}
 			</DropdownMenuLabel>
-			<DropdownMenuSeparator className='bg-gray-700' />
-			<DropdownMenuItem className='text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-gray-700 focus:text-white cursor-pointer'>
-				<Settings className='w-4 h-4 mr-2' />
-				Settings
+			<DropdownMenuSeparator className='bg-gray-200/10' />
+			<DropdownMenuItem asChild>
+				<Link
+					href='/settings'
+					className='text-gray-400 hover:bg-white/5 hover:text-white focus:bg-white/5 focus:text-white cursor-pointer flex items-center'
+				>
+					<Settings className='w-4 h-4 mr-2' />
+					Settings
+				</Link>
 			</DropdownMenuItem>
-			<DropdownMenuSeparator className='bg-gray-700' />
-			<DropdownMenuItem 
+			<DropdownMenuSeparator className='bg-gray-200/10' />
+			<DropdownMenuItem
 				onClick={onSignOut}
 				variant='destructive'
-				className='text-red-400 hover:bg-red-600/20 hover:text-red-300 focus:bg-red-600/20 focus:text-red-300 cursor-pointer'
+				className='text-red-400 hover:bg-red-900/50 hover:text-red-300 focus:bg-red-900/50 focus:text-red-300 cursor-pointer'
 			>
 				<LogOut className='w-4 h-4 mr-2' />
 				Sign Out
@@ -165,7 +178,9 @@ export default function Navbar() {
 									className='bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-600/50 disabled:cursor-not-allowed text-white shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition-all duration-300 hover:scale-105 group disabled:hover:scale-100'
 								>
 									<DiscordIcon className='h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300' />
-									<span className='text-lg'>{isLoading ? 'Connecting...' : 'Login'}</span>
+									<span className='text-lg'>
+										{isLoading ? "Connecting..." : "Login"}
+									</span>
 								</Button>
 							)}
 						</div>
@@ -219,46 +234,68 @@ export default function Navbar() {
 								</div>
 
 								{/* Auth Section - Show for all mobile/tablet screens since desktop auth is hidden until lg */}
-								<div className='flex flex-col pt-4 border-t border-gray-700/50'>
+								<div className='flex flex-col pt-4 border-t border-gray-200/10 space-y-4'>
 									{user ? (
-										<div className='flex items-center justify-between py-2'>
-											<div className='flex items-center space-x-2'>
-												{user.image ? (
-													<Image
-														src={user.image}
-														alt={user.name || "User"}
-														width={256}
-														height={256}
-														className='w-8 h-8 rounded-full border-2 border-gray-600'
-													/>
-												) : (
-													<div className='w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center border-2 border-gray-600'>
-														<UserIcon className='w-4 h-4 text-gray-300' />
+										<>
+											{/* User Profile Card */}
+											<div className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm rounded-lg p-4 shadow-sm'>
+												<div className='flex items-center space-x-3'>
+													{user.image ? (
+														<Image
+															src={user.image}
+															alt={user.name || "User"}
+															width={256}
+															height={256}
+															className='w-10 h-10 rounded-full border-2 border-gray-200/10'
+														/>
+													) : (
+														<div className='w-10 h-10 rounded-full bg-white/[0.02] border border-gray-200/10 flex items-center justify-center'>
+															<UserIcon className='w-5 h-5 text-gray-400' />
+														</div>
+													)}
+													<div className='flex-1 min-w-0'>
+														<div className='text-white font-medium truncate'>
+															{user.name || user.email}
+														</div>
+														<div className='text-xs text-gray-400'>Signed in via Discord</div>
 													</div>
-												)}
-												<span className='text-white text-sm font-medium'>
-													{user.name || user.email}
-												</span>
+												</div>
 											</div>
+
+											{/* Action Cards */}
+											<div className='grid grid-cols-2 gap-3'>
+												<Link
+													href='/settings'
+													className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm hover:bg-white/5 rounded-lg p-3 shadow-sm transition-colors group'
+												>
+													<div className='flex flex-col items-center text-center space-y-2'>
+														<Settings className='w-5 h-5 text-gray-400 group-hover:text-white transition-colors' />
+														<span className='text-xs text-gray-400 group-hover:text-white transition-colors font-medium'>Settings</span>
+													</div>
+												</Link>
+												<button
+													onClick={handleSignOut}
+													className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm hover:bg-red-900/20 rounded-lg p-3 shadow-sm transition-colors group'
+												>
+													<div className='flex flex-col items-center text-center space-y-2'>
+														<LogOut className='w-5 h-5 text-red-400 group-hover:text-red-300 transition-colors' />
+														<span className='text-xs text-red-400 group-hover:text-red-300 transition-colors font-medium'>Sign Out</span>
+													</div>
+												</button>
+											</div>
+										</>
+									) : (
+										<div className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm rounded-lg p-4 shadow-sm'>
 											<Button
-												variant='ghost'
+												onClick={handleSignIn}
 												size='sm'
-												onClick={handleSignOut}
-												className='text-gray-300 hover:text-white hover:bg-red-600/20 transition-all duration-300 group p-2'
+												disabled={isLoading}
+												className='w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-600/50 disabled:cursor-not-allowed text-white shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition-all duration-300 hover:scale-105 disabled:hover:scale-100 justify-center group'
 											>
-												<LogOut className='w-4 h-4' />
+												<DiscordIcon className='h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300' />
+												{isLoading ? "Connecting..." : "Login with Discord"}
 											</Button>
 										</div>
-									) : (
-										<Button
-											onClick={handleSignIn}
-											size='sm'
-											disabled={isLoading}
-											className='bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-600/50 disabled:cursor-not-allowed text-white shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition-all duration-300 hover:scale-105 disabled:hover:scale-100 justify-start group'
-										>
-											<DiscordIcon className='h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300' />
-											{isLoading ? 'Connecting...' : 'Login'}
-										</Button>
 									)}
 								</div>
 							</div>

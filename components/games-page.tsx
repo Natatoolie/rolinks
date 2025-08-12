@@ -114,13 +114,26 @@ export default function GamesPage() {
 
 	if (loading) {
 		return (
-			<div className='min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950'>
+			<div className='min-h-screen bg-gray-950'>
 				<Navbar />
-				<div className='container mx-auto px-4 py-8'>
+				{/* Background pattern */}
+				<div className='absolute inset-0 opacity-[0.02]'>
+					<div
+						className='absolute inset-0'
+						style={{
+							backgroundImage: `
+								linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+								linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+							`,
+							backgroundSize: "32px 32px",
+						}}
+					/>
+				</div>
+				<div className='relative container mx-auto px-4 py-8'>
 					<div className='mb-8'>
 						<h1 className='text-4xl font-bold text-white mb-4'>Browse Games</h1>
-						<div className='w-full max-w-md bg-gray-800 rounded-lg px-4 py-3 animate-pulse'>
-							<div className='h-4 bg-gray-700 rounded w-32'></div>
+						<div className='w-full max-w-md border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm rounded-lg px-4 py-3 animate-pulse shadow-sm'>
+							<div className='h-4 bg-gray-200/10 rounded w-32'></div>
 						</div>
 					</div>
 
@@ -143,24 +156,19 @@ export default function GamesPage() {
 	}
 
 	return (
-		<div className='min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950'>
+		<div className='min-h-screen bg-gray-950'>
 			<Navbar />
-			{/* Background elements */}
-			<div className='absolute inset-0 overflow-hidden'>
+			{/* Background pattern */}
+			<div className='absolute inset-0 opacity-[0.02]'>
 				<div
-					className='absolute inset-0 opacity-[0.03]'
+					className='absolute inset-0'
 					style={{
 						backgroundImage: `
-							linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-							linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
+							linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+							linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
 						`,
-						backgroundSize: "50px 50px",
+						backgroundSize: "32px 32px",
 					}}
-				/>
-				<div className='absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl animate-pulse' />
-				<div
-					className='absolute top-3/4 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl animate-pulse'
-					style={{ animationDelay: "2s" }}
 				/>
 			</div>
 
@@ -179,7 +187,7 @@ export default function GamesPage() {
 				{/* Search and Controls */}
 				<div className='mb-8 space-y-4'>
 					{/* Search Bar */}
-					<div className='flex items-center bg-gray-800 rounded-lg px-4 py-3 max-w-md border border-gray-700 focus-within:border-gray-600 transition-colors'>
+					<div className='flex items-center border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm rounded-lg px-4 py-3 max-w-md focus-within:border-gray-200/20 transition-colors shadow-sm'>
 						<Search className='h-5 w-5 text-gray-400 mr-3 flex-shrink-0' />
 						<input
 							type='text'
