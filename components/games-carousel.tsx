@@ -99,7 +99,9 @@ export default function GamesCarousel() {
 		return (
 			<div className='relative px-4 sm:px-8 md:px-12'>
 				<div className='flex gap-4 justify-center items-center py-20'>
-					<span className='text-gray-400 text-sm sm:text-base'>No games available</span>
+					<span className='text-gray-400 text-sm sm:text-base'>
+						No games available
+					</span>
 				</div>
 			</div>
 		)
