@@ -5,13 +5,10 @@ import { useCallback, useEffect, useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
-import { fetchGames } from "@/utils/actions/fetchGames"
 import { Game } from "@/payload-types"
 import GameCard from "./GameCard"
 
-export default function GamesCarousel() {
-	const [games, setGames] = useState<Game[]>([])
-	const [loading, setLoading] = useState(true)
+export default function GamesCarousel({ games }: { games: Game[] }) {
 	const [emblaRef, emblaApi] = useEmblaCarousel({
 		loop: true,
 		align: "start",
@@ -23,23 +20,6 @@ export default function GamesCarousel() {
 
 	const [prevBtnDisabled, setPrevBtnDisabled] = useState(true)
 	const [nextBtnDisabled, setNextBtnDisabled] = useState(true)
-
-	useEffect(() => {
-		const getGames = async () => {
-			try {
-				setLoading(true)
-				const response = await fetchGames()
-				console.log(response)
-				setGames(response.docs || [])
-			} catch (error) {
-				console.error("Error fetching games:", error)
-			} finally {
-				setLoading(false)
-			}
-		}
-
-		getGames()
-	}, [])
 
 	const scrollPrev = useCallback(() => {
 		if (emblaApi) emblaApi.scrollPrev()
@@ -67,33 +47,6 @@ export default function GamesCarousel() {
 		emblaApi.on("reInit", onSelect)
 		emblaApi.on("select", onSelect)
 	}, [emblaApi, onSelect])
-
-	if (loading) {
-		return (
-			<div className='relative px-4 sm:px-8 md:px-12'>
-				<div className='overflow-hidden'>
-					<div className='flex gap-2 sm:gap-3 md:gap-4'>
-						{Array.from({ length: 4 }).map((_, index) => (
-							<div
-								key={index}
-								className='flex-[0_0_calc(90vw-2rem)] sm:flex-[0_0_calc(45vw-1rem)] md:flex-[0_0_calc(33vw-1rem)] lg:flex-[0_0_280px] min-w-0'
-							>
-								<div className='relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl overflow-hidden h-48 sm:h-56 md:h-64'>
-									{/* Image skeleton */}
-									<Skeleton className='w-full h-full bg-gray-800/50' />
-
-									{/* Title overlay skeleton */}
-									<div className='absolute bottom-4 left-4 right-4'>
-										<Skeleton className='h-4 sm:h-5 md:h-6 w-3/4 bg-gray-700/50' />
-									</div>
-								</div>
-							</div>
-						))}
-					</div>
-				</div>
-			</div>
-		)
-	}
 
 	if (games.length === 0) {
 		return (

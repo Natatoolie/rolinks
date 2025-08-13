@@ -5,8 +5,14 @@ import GamesCarousel from "@/components/games-carousel"
 import SocialSection from "./SocialSection"
 import FeaturesSection from "./FeaturesSection"
 import Link from "next/link"
+import { fetchGames } from "@/utils/actions/fetchGames"
 
-export default function LandingPage() {
+export default async function LandingPage() {
+	const getGames = async () => {
+		const response = await fetchGames()
+		return response.docs
+	}
+
 	return (
 		<div className='min-h-screen relative bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950'>
 			{/* Animated background elements */}
@@ -82,7 +88,7 @@ export default function LandingPage() {
 						<h2 className='text-2xl font-semibold text-white text-center mb-12 tracking-tight'>
 							Popular Games
 						</h2>
-						<GamesCarousel />
+						<GamesCarousel games={await getGames()} />
 						<div className='text-center mt-12'>
 							<Link href={"/games"}>
 								<Button

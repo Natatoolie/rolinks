@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
-import { Search, X, Clock, TrendingUp, Server } from "lucide-react"
+import { Search, X, Clock, TrendingUp, Server, Trash2 } from "lucide-react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { searchGames } from "@/utils/actions/searchGames"
@@ -173,6 +173,16 @@ export default function SearchDropdown({
 		// Navigate to games page with search query
 		const url = `/games?q=${encodeURIComponent(searchTerm)}`
 		window.location.href = url
+	}
+
+	const removeFromRecent = (index: number) => {
+		const newRecentSearches = recentSearches.filter((_, i) => i !== index)
+		setRecentSearches(newRecentSearches)
+
+		// Update localStorage
+		if (typeof window !== "undefined") {
+			localStorage.setItem("recentSearches", JSON.stringify(newRecentSearches))
+		}
 	}
 
 	// Load recent searches from localStorage on mount
@@ -358,37 +368,51 @@ export default function SearchDropdown({
 									</h3>
 									<div className='space-y-2'>
 										{recentSearches.map((item, index) => (
-											<button
+											<div
 												key={`${item.name}-${index}`}
-												onClick={() =>
-													handleSearch(item.name, item.id, item.image)
-												}
-												className='w-full text-left p-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors flex items-center gap-3'
+												className='group relative'
 											>
-												<div className='w-8 h-8 rounded-md overflow-hidden flex-shrink-0 bg-white/[0.02] border border-gray-200/10'>
-													{item.image ? (
-														<Image
-															src={item.image}
-															alt={item.name}
-															width={32}
-															height={32}
-															className='w-full h-full object-cover'
-														/>
-													) : (
-														<div className='w-full h-full flex items-center justify-center'>
-															<Clock className='h-4 w-4 text-gray-400' />
+												<button
+													onClick={() =>
+														handleSearch(item.name, item.id, item.image)
+													}
+													className='w-full text-left p-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors flex items-center gap-3'
+												>
+													<div className='w-8 h-8 rounded-md overflow-hidden flex-shrink-0 bg-white/[0.02] border border-gray-200/10'>
+														{item.image ? (
+															<Image
+																src={item.image}
+																alt={item.name}
+																width={32}
+																height={32}
+																className='w-full h-full object-cover'
+															/>
+														) : (
+															<div className='w-full h-full flex items-center justify-center'>
+																<Clock className='h-4 w-4 text-gray-400' />
+															</div>
+														)}
+													</div>
+													<div className='flex-1 min-w-0'>
+														<div className='truncate font-medium'>
+															{item.name}
 														</div>
-													)}
-												</div>
-												<div className='flex-1 min-w-0'>
-													<div className='truncate font-medium'>
-														{item.name}
+														<div className='text-xs text-gray-400'>
+															Recent search
+														</div>
 													</div>
-													<div className='text-xs text-gray-400'>
-														Recent search
-													</div>
-												</div>
-											</button>
+												</button>
+												<button
+													onClick={(e) => {
+														e.stopPropagation()
+														removeFromRecent(index)
+													}}
+													className='absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 text-gray-500 hover:text-red-400 hover:bg-red-900/20 rounded'
+													title='Remove from recent searches'
+												>
+													<X className='h-3 w-3' />
+												</button>
+											</div>
 										))}
 									</div>
 								</div>

@@ -23,9 +23,7 @@ type ViewMode = "grid" | "list"
 type SortOption = "name" | "serverCount" | "robux"
 type SortDirection = "asc" | "desc"
 
-export default function GamesPage() {
-	const [gamesList, setGamesList] = useState<Game[]>([])
-	const [isLoading, setIsLoading] = useState(true)
+export default function GamesPage({ games: gamesList }: { games: Game[] }) {
 	const [searchTerm, setSearchTerm] = useQueryState("q", { defaultValue: "" })
 	const [viewMode, setViewMode] = useQueryState("view", {
 		defaultValue: "grid" as ViewMode,
@@ -40,22 +38,6 @@ export default function GamesPage() {
 		defaultValue: "asc" as SortDirection,
 		parse: (value) => (value === "desc" ? "desc" : "asc"),
 	})
-
-	useEffect(() => {
-		const loadGames = async () => {
-			try {
-				setIsLoading(true)
-				const response = await fetchGames()
-				setGamesList(response.docs || [])
-			} catch (error) {
-				console.error("Error fetching games:", error)
-			} finally {
-				setIsLoading(false)
-			}
-		}
-
-		loadGames()
-	}, [])
 
 	const sortedAndFilteredGames = useMemo(() => {
 		const filteredGames = gamesList.filter(
@@ -101,47 +83,47 @@ export default function GamesPage() {
 		}
 	}
 
-	if (isLoading) {
-		return (
-			<div className='min-h-screen bg-gray-950'>
-				<Navbar />
-				<div className='absolute inset-0 opacity-[0.02]'>
-					<div
-						className='absolute inset-0'
-						style={{
-							backgroundImage: `
-								linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-								linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
-							`,
-							backgroundSize: "32px 32px",
-						}}
-					/>
-				</div>
-				<div className='relative container mx-auto px-4 py-8'>
-					<div className='mb-8'>
-						<h1 className='text-4xl font-bold text-white mb-4'>Browse Games</h1>
-						<div className='w-full max-w-md border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm rounded-lg px-4 py-3 animate-pulse shadow-sm'>
-							<div className='h-4 bg-gray-200/10 rounded w-32'></div>
-						</div>
-					</div>
+	// if (isLoading) {
+	// 	return (
+	// 		<div className='min-h-screen bg-gray-950'>
+	// 			<Navbar />
+	// 			<div className='absolute inset-0 opacity-[0.02]'>
+	// 				<div
+	// 					className='absolute inset-0'
+	// 					style={{
+	// 						backgroundImage: `
+	// 							linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+	// 							linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+	// 						`,
+	// 						backgroundSize: "32px 32px",
+	// 					}}
+	// 				/>
+	// 			</div>
+	// 			<div className='relative container mx-auto px-4 py-8'>
+	// 				<div className='mb-8'>
+	// 					<h1 className='text-4xl font-bold text-white mb-4'>Browse Games</h1>
+	// 					<div className='w-full max-w-md border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm rounded-lg px-4 py-3 animate-pulse shadow-sm'>
+	// 						<div className='h-4 bg-gray-200/10 rounded w-32'></div>
+	// 					</div>
+	// 				</div>
 
-					<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6'>
-						{Array.from({ length: 10 }).map((_, i) => (
-							<div
-								key={i}
-								className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm shadow-sm rounded-lg p-4 animate-pulse'
-							>
-								<div className='aspect-square bg-gray-200/10 rounded-lg mb-4'></div>
-								<div className='h-4 bg-gray-200/10 rounded mb-2'></div>
-								<div className='h-3 bg-gray-200/10 rounded w-20 mb-1'></div>
-								<div className='h-3 bg-gray-200/10 rounded w-16'></div>
-							</div>
-						))}
-					</div>
-				</div>
-			</div>
-		)
-	}
+	// 				<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6'>
+	// 					{Array.from({ length: 10 }).map((_, i) => (
+	// 						<div
+	// 							key={i}
+	// 							className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm shadow-sm rounded-lg p-4 animate-pulse'
+	// 						>
+	// 							<div className='aspect-square bg-gray-200/10 rounded-lg mb-4'></div>
+	// 							<div className='h-4 bg-gray-200/10 rounded mb-2'></div>
+	// 							<div className='h-3 bg-gray-200/10 rounded w-20 mb-1'></div>
+	// 							<div className='h-3 bg-gray-200/10 rounded w-16'></div>
+	// 						</div>
+	// 					))}
+	// 				</div>
+	// 			</div>
+	// 		</div>
+	// 	)
+	// }
 
 	return (
 		<div className='min-h-screen bg-gray-950'>
