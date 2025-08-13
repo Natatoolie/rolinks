@@ -177,7 +177,7 @@ export interface Game {
    * Game ID (e.g. "17371261")
    */
   gameid: number;
-  image: string | Media;
+  image?: string | null;
   robux: number;
   /**
    * Number of private servers available

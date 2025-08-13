@@ -49,7 +49,7 @@ const UserProfile = ({
 			>
 				{user ? (
 					<Image
-						src={user.image || ""}
+						src={user.image || null}
 						alt={user.name || "User"}
 						width={256}
 						height={256}
@@ -149,13 +149,13 @@ export default function Navbar() {
 								<span className='relative z-10'>Home</span>
 								<div className='absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/10 to-pink-500/0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
 							</Link>
-							<a
+							<Link
 								href='/games'
 								className='group relative px-4 py-2 text-gray-300 hover:text-white transition-all duration-300 whitespace-nowrap rounded-lg hover:bg-gray-800/50'
 							>
 								<span className='relative z-10'>Browse Games</span>
 								<div className='absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/10 to-pink-500/0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
-							</a>
+							</Link>
 						</div>
 					</div>
 
@@ -224,13 +224,13 @@ export default function Navbar() {
 										<span className='relative z-10'>Home</span>
 										<div className='absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/10 to-pink-500/0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
 									</Link>
-									<a
+									<Link
 										href='/games'
 										className='group relative text-gray-300 hover:text-white transition-all duration-300 py-2 md:py-1 px-2 rounded-lg hover:bg-gray-800/40'
 									>
 										<span className='relative z-10'>Browse Games</span>
 										<div className='absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/10 to-pink-500/0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
-									</a>
+									</Link>
 								</div>
 
 								{/* Auth Section - Show for all mobile/tablet screens since desktop auth is hidden until lg */}
@@ -257,7 +257,9 @@ export default function Navbar() {
 														<div className='text-white font-medium truncate'>
 															{user.name || user.email}
 														</div>
-														<div className='text-xs text-gray-400'>Signed in via Discord</div>
+														<div className='text-xs text-gray-400'>
+															Signed in via Discord
+														</div>
 													</div>
 												</div>
 											</div>
@@ -270,7 +272,9 @@ export default function Navbar() {
 												>
 													<div className='flex flex-col items-center text-center space-y-2'>
 														<Settings className='w-5 h-5 text-gray-400 group-hover:text-white transition-colors' />
-														<span className='text-xs text-gray-400 group-hover:text-white transition-colors font-medium'>Settings</span>
+														<span className='text-xs text-gray-400 group-hover:text-white transition-colors font-medium'>
+															Settings
+														</span>
 													</div>
 												</Link>
 												<button
@@ -279,7 +283,9 @@ export default function Navbar() {
 												>
 													<div className='flex flex-col items-center text-center space-y-2'>
 														<LogOut className='w-5 h-5 text-red-400 group-hover:text-red-300 transition-colors' />
-														<span className='text-xs text-red-400 group-hover:text-red-300 transition-colors font-medium'>Sign Out</span>
+														<span className='text-xs text-red-400 group-hover:text-red-300 transition-colors font-medium'>
+															Sign Out
+														</span>
 													</div>
 												</button>
 											</div>

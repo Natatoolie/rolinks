@@ -1,3 +1,5 @@
+import { getImageURLFromPlaceID } from "@/utils/imageUtils"
+import { getPreviouslyCachedImageOrNull } from "next/dist/server/image-optimizer"
 import type { CollectionConfig } from "payload"
 
 export const Games: CollectionConfig = {
@@ -24,14 +26,41 @@ export const Games: CollectionConfig = {
 			admin: {
 				description: 'Game ID (e.g. "17371261")',
 			},
+			hooks: {
+				beforeChange: [
+					async ({ siblingData, req, context }) => {
+						if (context.triggerHook === false) {
+							return
+						}
+						console.log("ran!")
+						// console.log(siblingData)
+						const imageUrl = await getImageURLFromPlaceID(siblingData.gameid)
+
+						siblingData.image = imageUrl
+						await req.payload.update({
+							collection: "games",
+							id: siblingData.id,
+							data: { image: imageUrl || null },
+							where: { gameid: siblingData.gameid },
+							context: {
+								triggerHook: false,
+							},
+						})
+
+						console.log(getPreviouslyCachedImageOrNull)
+					},
+				],
+			},
 		},
 
 		{
 			name: "image", // required
-			type: "upload", // required
-			relationTo: "media", //required eg:media
+			type: "text", // required
 			label: "Icon",
-			required: true,
+			access: {
+				create: () => false,
+				update: () => false,
+			},
 		},
 
 		{

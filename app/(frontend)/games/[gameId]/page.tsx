@@ -30,12 +30,6 @@ type PrivateServer = {
 	lastChecked?: string
 }
 
-// Helper function to get image URL
-const getImageUrl = (image: string | Media | undefined): string | null => {
-	if (!image) return null
-	return typeof image === "string" ? image : image.url || null
-}
-
 // Mock private server data - replace with actual backend integration
 const mockPrivateServers: PrivateServer[] = [
 	{
@@ -176,9 +170,9 @@ export default function GamePage({ params }: GamePageProps) {
 					<div className='flex flex-col lg:flex-row gap-6'>
 						{/* Game Image */}
 						<div className='w-full lg:w-80 aspect-square rounded-lg overflow-hidden bg-white/[0.02] border border-gray-200/10'>
-							{getImageUrl(game.image) ? (
+							{game.image ? (
 								<Image
-									src={getImageUrl(game.image)!}
+									src={game.image}
 									alt={game.name}
 									width={512}
 									height={512}

@@ -8,12 +8,10 @@ type Props = {
 	name: string
 	serverCount?: number
 	gameid: number
-	icon: Media | string
+	imageUrl?: string
 }
 
-const GameCard = ({ id, name, serverCount, gameid, icon }: Props) => {
-	const iconUrl = typeof icon === "string" ? icon : icon.url
-
+const GameCard = ({ id, name, serverCount, gameid, imageUrl }: Props) => {
 	return (
 		<div
 			key={id}
@@ -23,8 +21,8 @@ const GameCard = ({ id, name, serverCount, gameid, icon }: Props) => {
 				<div className='relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl overflow-hidden hover:border-gray-700 hover:bg-gray-900/70 transition-all duration-300 cursor-pointer group h-48 sm:h-56 md:h-64'>
 					{/* Game Image */}
 					<div className='relative w-full h-full'>
-						{iconUrl ? (
-							<Image src={iconUrl} alt={name} fill className='object-cover' />
+						{imageUrl ? (
+							<Image src={imageUrl} alt={name} fill className='object-cover' />
 						) : (
 							<div className='w-full h-full bg-gray-800 flex items-center justify-center text-gray-400 text-xs sm:text-sm'>
 								No Image

@@ -57,11 +57,6 @@ export default function GamesPage() {
 		loadGames()
 	}, [])
 
-	const getImageUrl = (image: string | Media | undefined): string | null => {
-		if (!image) return null
-		return typeof image === "string" ? image : image.url || null
-	}
-
 	const sortedAndFilteredGames = useMemo(() => {
 		const filteredGames = gamesList.filter(
 			(game) =>
@@ -313,9 +308,9 @@ export default function GamesPage() {
 								className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm shadow-sm rounded-lg overflow-hidden hover:bg-white/5 transition-all duration-300 cursor-pointer group'
 							>
 								<div className='relative aspect-square bg-white/[0.02] border-b border-gray-200/10'>
-									{getImageUrl(game.image) ? (
+									{game.image ? (
 										<Image
-											src={getImageUrl(game.image)!}
+											src={game.image}
 											alt={game.name}
 											fill
 											className='object-cover'
@@ -370,9 +365,9 @@ export default function GamesPage() {
 							>
 								<div className='flex items-center gap-6'>
 									<div className='w-16 h-16 rounded-lg overflow-hidden bg-white/[0.02] border border-gray-200/10 flex-shrink-0'>
-										{getImageUrl(game.image) ? (
+										{game.image ? (
 											<Image
-												src={getImageUrl(game.image)!}
+												src={game.image}
 												alt={game.name}
 												width={256}
 												height={256}

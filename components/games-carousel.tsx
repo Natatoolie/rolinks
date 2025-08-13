@@ -119,7 +119,7 @@ export default function GamesCarousel() {
 							name={game.name}
 							serverCount={game.serverCount!}
 							gameid={game.gameid}
-							icon={game.image}
+							imageUrl={game.image as string}
 						/>
 					))}
 				</div>

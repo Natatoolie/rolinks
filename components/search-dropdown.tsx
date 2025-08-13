@@ -35,19 +35,13 @@ export default function SearchDropdown({
 	const [isLoading, setIsLoading] = useState(false)
 	const [selectedIndex, setSelectedIndex] = useState(-1)
 	const [recentSearches, setRecentSearches] = useState<
-		Array<{ name: string; id?: string; image?: string | Media }>
+		Array<{ name: string; id?: string; image?: string }>
 	>([])
 	const [trendingGames, setTrendingGames] = useState<Game[]>([])
 
 	const searchRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
 	const resultsRef = useRef<HTMLDivElement>(null)
-
-	// Helper function to get image URL
-	const getImageUrl = (image: string | Media | undefined): string | null => {
-		if (!image) return null
-		return typeof image === "string" ? image : image.url || null
-	}
 
 	// Load trending games on component mount
 	useEffect(() => {
@@ -158,7 +152,7 @@ export default function SearchDropdown({
 	const handleSearch = (
 		searchTerm: string,
 		gameId?: string,
-		gameImage?: string | Media
+		gameImage?: string
 	) => {
 		setQuery(searchTerm)
 		setIsOpen(false)
@@ -215,7 +209,7 @@ export default function SearchDropdown({
 					handleSearch(
 						results[selectedIndex].name,
 						results[selectedIndex].id,
-						results[selectedIndex].image
+						results[selectedIndex].image as string
 					)
 				} else if (query.trim()) {
 					handleSearch(query)
@@ -322,14 +316,14 @@ export default function SearchDropdown({
 											<button
 												key={game.id}
 												onClick={() =>
-													handleSearch(game.name, game.id, game.image)
+													handleSearch(game.name, game.id, game.image as string)
 												}
 												className='w-full text-left p-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors flex items-center gap-3'
 											>
 												<div className='w-8 h-8 rounded-md overflow-hidden flex-shrink-0 bg-white/[0.02] border border-gray-200/10'>
-													{getImageUrl(game.image) ? (
+													{game.image ? (
 														<Image
-															src={getImageUrl(game.image)!}
+															src={game.image}
 															alt={game.name}
 															width={32}
 															height={32}
@@ -372,9 +366,9 @@ export default function SearchDropdown({
 												className='w-full text-left p-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors flex items-center gap-3'
 											>
 												<div className='w-8 h-8 rounded-md overflow-hidden flex-shrink-0 bg-white/[0.02] border border-gray-200/10'>
-													{getImageUrl(item.image) ? (
+													{item.image ? (
 														<Image
-															src={getImageUrl(item.image)!}
+															src={item.image}
 															alt={item.name}
 															width={32}
 															height={32}
@@ -416,7 +410,9 @@ export default function SearchDropdown({
 							{results.map((game, index) => (
 								<button
 									key={game.id}
-									onClick={() => handleSearch(game.name, game.id, game.image)}
+									onClick={() =>
+										handleSearch(game.name, game.id, game.image as string)
+									}
 									className={cn(
 										"w-full text-left p-2 rounded-lg transition-colors flex items-center gap-3",
 										selectedIndex === index
@@ -425,9 +421,9 @@ export default function SearchDropdown({
 									)}
 								>
 									<div className='w-8 h-8 rounded-md overflow-hidden flex-shrink-0 bg-white/[0.02] border border-gray-200/10'>
-										{getImageUrl(game.image) ? (
+										{game.image ? (
 											<Image
-												src={getImageUrl(game.image)!}
+												src={game.image}
 												alt={game.name}
 												width={32}
 												height={32}
@@ -455,7 +451,9 @@ export default function SearchDropdown({
 					{showNoResults && (
 						<div className='p-4 text-center text-gray-400'>
 							<Server className='h-8 w-8 mx-auto mb-2 opacity-50' />
-							<div className='text-sm'>No servers found for "{query}"</div>
+							<div className='text-sm'>
+								No servers found for &quot;{query}&quot;
+							</div>
 						</div>
 					)}
 				</div>
