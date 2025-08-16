@@ -15,7 +15,6 @@ import Image from "next/image"
 import { fetchGames } from "@/utils/actions/fetchGames"
 import { Game, Media } from "@/payload-types"
 import { cn } from "@/lib/utils"
-import Navbar from "@/components/navbar"
 import { useQueryState } from "nuqs"
 import { RobuxIcon } from "@/components/ui/robux-icon"
 
@@ -127,7 +126,6 @@ export default function GamesPage({ games: gamesList }: { games: Game[] }) {
 
 	return (
 		<div className='min-h-screen bg-gray-950'>
-			<Navbar />
 			<div className='absolute inset-0 opacity-[0.02]'>
 				<div
 					className='absolute inset-0'

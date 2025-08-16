@@ -70,6 +70,7 @@ export interface Config {
     admins: Admin;
     media: Media;
     games: Game;
+    servers: Server;
     users: User;
     sessions: Session;
     account: Account;
@@ -83,6 +84,7 @@ export interface Config {
     admins: AdminsSelect<false> | AdminsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     games: GamesSelect<false> | GamesSelect<true>;
+    servers: ServersSelect<false> | ServersSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     sessions: SessionsSelect<false> | SessionsSelect<true>;
     account: AccountSelect<false> | AccountSelect<true>;
@@ -187,14 +189,18 @@ export interface Game {
    * Show this game on the website
    */
   isActive?: boolean | null;
-  servers?:
-    | {
-        link: string;
-        createdAt?: string | null;
-        checkedAt?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "servers".
+ */
+export interface Server {
+  id: string;
+  name: string;
+  link: string;
+  game?: (string | null) | Game;
   updatedAt: string;
   createdAt: string;
 }
@@ -274,6 +280,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'games';
         value: string | Game;
+      } | null)
+    | ({
+        relationTo: 'servers';
+        value: string | Server;
       } | null)
     | ({
         relationTo: 'users';
@@ -384,14 +394,17 @@ export interface GamesSelect<T extends boolean = true> {
   robux?: T;
   serverCount?: T;
   isActive?: T;
-  servers?:
-    | T
-    | {
-        link?: T;
-        createdAt?: T;
-        checkedAt?: T;
-        id?: T;
-      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "servers_select".
+ */
+export interface ServersSelect<T extends boolean = true> {
+  name?: T;
+  link?: T;
+  game?: T;
   updatedAt?: T;
   createdAt?: T;
 }

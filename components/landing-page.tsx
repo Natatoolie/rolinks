@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
-import Navbar from "@/components/navbar"
 import GamesCarousel from "@/components/games-carousel"
 import SocialSection from "./SocialSection"
 import FeaturesSection from "./FeaturesSection"
@@ -50,7 +49,6 @@ export default async function LandingPage() {
 			</div>
 
 			<div className='relative z-10'>
-				<Navbar />
 				<div className='container mx-auto px-4 py-8'>
 					{/* Header */}
 					<header className='text-center mb-16'>

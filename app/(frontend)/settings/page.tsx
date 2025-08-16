@@ -49,7 +49,6 @@ import {
 import Image from "next/image"
 import { authClient } from "@/utils/auth/auth-client"
 import { useRouter } from "next/navigation"
-import Navbar from "@/components/navbar"
 
 interface SessionInfo {
 	id: string
@@ -341,8 +340,6 @@ export default function SettingsPage() {
 			</div>
 
 			<div className='relative'>
-				<Navbar />
-
 				<motion.div
 					className='container mx-auto px-4 py-12 max-w-4xl'
 					variants={containerVariants}
