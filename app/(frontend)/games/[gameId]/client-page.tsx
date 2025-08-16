@@ -14,17 +14,19 @@ import {
 	Check,
 	ChevronLeft,
 	ChevronRight,
+	Plus,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { RobuxIcon } from "@/components/ui/robux-icon"
 import { Game, Server as ServerType } from "@/payload-types"
 import { fetchServerListData } from "@/utils/actions/getGameData"
+import { authClient } from "@/utils/auth/auth-client"
 
 type ServerData = {
 	servers: ServerType[]
 	totalPages: number
-	currentPage: number
+	currentPage: number | undefined
 	totalDocs: number
 	hasNextPage: boolean
 	hasPrevPage: boolean
@@ -84,6 +86,8 @@ export default function GamesClientPage({
 	const [copiedServerIds, setCopiedServerIds] = useState<Set<string>>(new Set())
 	const [currentPage, setCurrentPage] = useState(1)
 	const [isPending, startTransition] = useTransition()
+
+	const { data: user } = authClient.useSession()
 
 	const loadServerPage = async (page: number) => {
 		startTransition(async () => {
@@ -225,7 +229,6 @@ export default function GamesClientPage({
 								</div>
 							</div>
 						</div>
-
 					</div>
 
 					{/* RIGHT COLUMN - Private Servers */}
@@ -241,6 +244,27 @@ export default function GamesClientPage({
 										{serverData?.totalDocs || 0} servers available
 									</p>
 								</div>
+								{user?.user === undefined ? (
+									<Button
+										disabled={user?.user === undefined}
+										variant='outline'
+										className='bg-green-600/20 border-green-500/30 text-green-400 hover:bg-green-600/30 hover:text-green-300 hover:border-green-400/50 transition-all duration-300 hover:scale-105 active:scale-95'
+									>
+										<Plus className='h-4 w-4 mr-2' />
+										Add Server
+									</Button>
+								) : (
+									<Link href={`/games/${game.gameid}/add-server`}>
+										<Button
+											disabled={user?.user === undefined}
+											variant='outline'
+											className='bg-green-600/20 border-green-500/30 text-green-400 hover:bg-green-600/30 hover:text-green-300 hover:border-green-400/50 transition-all duration-300 hover:scale-105 active:scale-95'
+										>
+											<Plus className='h-4 w-4 mr-2' />
+											Add Server
+										</Button>
+									</Link>
+								)}
 							</div>
 						</div>
 

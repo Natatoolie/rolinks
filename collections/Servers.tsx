@@ -1,4 +1,4 @@
-import { adjectives, nouns } from "@/lib/serverNames"
+import { adjectives, generateName, nouns } from "@/lib/serverNames"
 import { CollectionConfig } from "payload"
 
 const Servers: CollectionConfig = {
@@ -17,13 +17,7 @@ const Servers: CollectionConfig = {
 			type: "text", // required
 			label: "Server Name",
 			required: true,
-			defaultValue: () => {
-				return (
-					adjectives[Math.floor(Math.random() * adjectives.length)] +
-					" " +
-					nouns[Math.floor(Math.random() * nouns.length)]
-				)
-			},
+			defaultValue: generateName,
 
 			access: {
 				create: () => false,
@@ -53,6 +47,11 @@ const Servers: CollectionConfig = {
 				update: () => false,
 			},
 			defaultValue: () => new Date().toISOString(),
+		},
+		{
+			name: "creator",
+			type: "relationship",
+			relationTo: "users",
 		},
 	],
 

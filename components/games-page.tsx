@@ -12,8 +12,7 @@ import {
 	ExternalLink,
 } from "lucide-react"
 import Image from "next/image"
-import { fetchGames } from "@/utils/actions/fetchGames"
-import { Game, Media } from "@/payload-types"
+import { Game } from "@/payload-types"
 import { cn } from "@/lib/utils"
 import { useQueryState } from "nuqs"
 import { RobuxIcon } from "@/components/ui/robux-icon"
@@ -81,48 +80,6 @@ export default function GamesPage({ games: gamesList }: { games: Game[] }) {
 			setSortDirection("asc")
 		}
 	}
-
-	// if (isLoading) {
-	// 	return (
-	// 		<div className='min-h-screen bg-gray-950'>
-	// 			<Navbar />
-	// 			<div className='absolute inset-0 opacity-[0.02]'>
-	// 				<div
-	// 					className='absolute inset-0'
-	// 					style={{
-	// 						backgroundImage: `
-	// 							linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-	// 							linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
-	// 						`,
-	// 						backgroundSize: "32px 32px",
-	// 					}}
-	// 				/>
-	// 			</div>
-	// 			<div className='relative container mx-auto px-4 py-8'>
-	// 				<div className='mb-8'>
-	// 					<h1 className='text-4xl font-bold text-white mb-4'>Browse Games</h1>
-	// 					<div className='w-full max-w-md border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm rounded-lg px-4 py-3 animate-pulse shadow-sm'>
-	// 						<div className='h-4 bg-gray-200/10 rounded w-32'></div>
-	// 					</div>
-	// 				</div>
-
-	// 				<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6'>
-	// 					{Array.from({ length: 10 }).map((_, i) => (
-	// 						<div
-	// 							key={i}
-	// 							className='border border-gray-200/10 bg-white/[0.02] backdrop-blur-sm shadow-sm rounded-lg p-4 animate-pulse'
-	// 						>
-	// 							<div className='aspect-square bg-gray-200/10 rounded-lg mb-4'></div>
-	// 							<div className='h-4 bg-gray-200/10 rounded mb-2'></div>
-	// 							<div className='h-3 bg-gray-200/10 rounded w-20 mb-1'></div>
-	// 							<div className='h-3 bg-gray-200/10 rounded w-16'></div>
-	// 						</div>
-	// 					))}
-	// 				</div>
-	// 			</div>
-	// 		</div>
-	// 	)
-	// }
 
 	return (
 		<div className='min-h-screen bg-gray-950'>

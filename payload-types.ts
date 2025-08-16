@@ -202,6 +202,7 @@ export interface Server {
   link: string;
   game: string | Game;
   checkedAt?: string | null;
+  creator?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -407,6 +408,7 @@ export interface ServersSelect<T extends boolean = true> {
   link?: T;
   game?: T;
   checkedAt?: T;
+  creator?: T;
   updatedAt?: T;
   createdAt?: T;
 }
