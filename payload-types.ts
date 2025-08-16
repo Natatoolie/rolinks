@@ -187,6 +187,14 @@ export interface Game {
    * Show this game on the website
    */
   isActive?: boolean | null;
+  servers?:
+    | {
+        link: string;
+        createdAt?: string | null;
+        checkedAt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -376,6 +384,14 @@ export interface GamesSelect<T extends boolean = true> {
   robux?: T;
   serverCount?: T;
   isActive?: T;
+  servers?:
+    | T
+    | {
+        link?: T;
+        createdAt?: T;
+        checkedAt?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

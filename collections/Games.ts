@@ -96,6 +96,47 @@ export const Games: CollectionConfig = {
 				description: "Show this game on the website",
 			},
 		},
+		{
+			name: "servers", // required
+			type: "array", // required
+			label: "Private Servers",
+			minRows: 0,
+			maxRows: 30,
+			labels: {
+				singular: "server",
+				plural: "servers",
+			},
+			fields: [
+				// required
+				{
+					name: "link", // required
+					type: "text", // required
+					label: "Server Link",
+					required: true,
+				},
+				{
+					name: "createdAt", // required
+					type: "date", // required
+					label: "Created At",
+					defaultValue: new Date().toISOString(),
+					access: {
+						create: () => false,
+						update: () => false,
+					},
+				},
+				{
+					name: "checkedAt", // required
+					type: "date", // required
+					label: "Last Checked",
+					defaultValue: new Date().toISOString(),
+
+					access: {
+						create: () => false,
+						update: () => false,
+					},
+				},
+			],
+		},
 	],
 	timestamps: true,
 }

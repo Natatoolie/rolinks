@@ -9,6 +9,16 @@ export const fetchGames = async () => {
 				equals: true,
 			},
 		},
+		select: {
+			name: true,
+			gameid: true,
+			robux: true,
+			serverCount: true,
+			createdAt: true,
+			image: true,
+			isActive: true,
+			updatedAt: true,
+		},
 	})
 	return games
 }
