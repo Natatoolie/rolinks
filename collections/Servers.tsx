@@ -42,7 +42,17 @@ const Servers: CollectionConfig = {
 			type: "relationship", // required
 			relationTo: "games", //required eg:users
 			hasMany: false,
+			required: true,
+		},
+		{
+			name: "checkedAt",
+			type: "date",
 			required: false,
+			access: {
+				create: () => false,
+				update: () => false,
+			},
+			defaultValue: () => new Date().toISOString(),
 		},
 	],
 

@@ -25,12 +25,20 @@ export const fetchServerListData = async ({
 			],
 		},
 		page: page,
-		limit: 10,
+		limit: 4,
 		sort: ["-checkedAt"],
 	})
-	const serverList = serverListData.docs
-	if (!serverList) return null
-	return serverList
+
+	if (!serverListData.docs) return null
+
+	return {
+		servers: serverListData.docs,
+		totalPages: serverListData.totalPages,
+		currentPage: serverListData.page,
+		totalDocs: serverListData.totalDocs,
+		hasNextPage: serverListData.hasNextPage,
+		hasPrevPage: serverListData.hasPrevPage,
+	}
 }
 
 export const fetchGameData = async (gameId: string) => {

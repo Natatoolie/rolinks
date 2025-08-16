@@ -9,15 +9,16 @@ type GamePageProps = {
 }
 
 export default async function GamePage({ params }: GamePageProps) {
-	const [gameData, serverList] = await Promise.all([
-		fetchGameData((await params).gameId),
-		fetchServerListData({ gameId: (await params).gameId }),
+	const gameId = (await params).gameId
+	
+	const [game, initialServerData] = await Promise.all([
+		fetchGameData(gameId),
+		fetchServerListData({ gameId, page: 1 }),
 	])
 
-	const game = await fetchGameData((await params).gameId)
 	if (!game) {
 		return <>This page does not exist</>
 	}
 
-	return <GamesClientPage game={game} />
+	return <GamesClientPage game={game} initialServerData={initialServerData} />
 }
