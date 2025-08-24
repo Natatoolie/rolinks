@@ -28,10 +28,12 @@ export const Games: CollectionConfig = {
 			},
 			hooks: {
 				beforeChange: [
-					async ({ siblingData, req, context }) => {
+					async ({ siblingData, req, context, siblingFields }) => {
 						if (context.triggerHook === false) {
 							return
 						}
+						console.log(siblingData, "data")
+						console.log(siblingFields, "fields")
 						console.log("ran!")
 						// console.log(siblingData)
 						const imageUrl = await getImageURLFromPlaceID(siblingData.gameid)

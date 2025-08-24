@@ -16,6 +16,7 @@ import { Game } from "@/payload-types"
 import { cn } from "@/lib/utils"
 import { useQueryState } from "nuqs"
 import { RobuxIcon } from "@/components/ui/robux-icon"
+import AddGameButton from "@/components/add-game-button"
 
 type ViewMode = "grid" | "list"
 type SortOption = "name" | "serverCount" | "robux"
@@ -98,13 +99,20 @@ export default function GamesPage({ games: gamesList }: { games: Game[] }) {
 
 			<div className='relative z-10 container mx-auto px-4 py-8'>
 				<div className='mb-8'>
-					<h1 className='text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight'>
-						Browse Games
-					</h1>
-					<p className='text-gray-400 text-lg max-w-2xl'>
-						Discover and explore {gamesList.length} games with private servers
-						available.
-					</p>
+					<div className='flex items-start justify-between gap-4 mb-4'>
+						<div>
+							<h1 className='text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight'>
+								Browse Games
+							</h1>
+							<p className='text-gray-400 text-lg max-w-2xl'>
+								Discover and explore {gamesList.length} games with private servers
+								available.
+							</p>
+						</div>
+						<div className='flex-shrink-0 mt-2'>
+							<AddGameButton />
+						</div>
+					</div>
 				</div>
 
 				<div className='mb-8 space-y-4'>
