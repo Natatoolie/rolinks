@@ -1,4 +1,4 @@
-import { getImageURLFromPlaceID } from "@/utils/imageUtils"
+import { getPlaceDataFromPlaceID } from "@/utils/placeUtils"
 import { getPreviouslyCachedImageOrNull } from "next/dist/server/image-optimizer"
 import type { CollectionConfig } from "payload"
 
@@ -14,7 +14,7 @@ export const Games: CollectionConfig = {
 		{
 			name: "name",
 			type: "text",
-			required: true,
+			// required: true,
 			label: "Name",
 		},
 		{
@@ -28,26 +28,39 @@ export const Games: CollectionConfig = {
 			},
 			hooks: {
 				beforeChange: [
-					async ({ siblingData, req, context, siblingFields }) => {
+					async ({ siblingData, req, context }) => {
 						if (context.triggerHook === false) {
 							return
 						}
-						console.log(siblingData, "data")
-						console.log(siblingFields, "fields")
-						console.log("ran!")
+
 						// console.log(siblingData)
-						const imageUrl = await getImageURLFromPlaceID(siblingData.gameid)
+						const data = await getPlaceDataFromPlaceID(siblingData.gameid)
+						console.log(data)
+						if (!data) {
+							return
+						}
+						const { imageUrl, name: newName } = data
+						console.log(newName)
+
+						const name =
+							siblingData.name === "" ||
+							siblingData.name === null ||
+							siblingData.name === undefined
+								? newName
+								: siblingData.name
+						console.log(siblingData.name, name)
 
 						siblingData.image = imageUrl
-						await req.payload.update({
-							collection: "games",
-							id: siblingData.id,
-							data: { image: imageUrl || null },
-							where: { gameid: siblingData.gameid },
-							context: {
-								triggerHook: false,
-							},
-						})
+						siblingData.name = name
+						// await req.payload.update({
+						// 	collection: "games",
+						// 	id: siblingData.id,
+						// 	data: { image: imageUrl || null, name: name },
+						// 	where: { gameid: siblingData.gameid },
+						// 	context: {
+						// 		triggerHook: false,
+						// 	},
+						// })
 
 						console.log(getPreviouslyCachedImageOrNull)
 					},

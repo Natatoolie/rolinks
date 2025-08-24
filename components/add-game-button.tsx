@@ -97,25 +97,29 @@ export default function AddGameButton() {
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger asChild>
 				<Button
-					className="bg-white/10 hover:bg-white/20 text-white border-gray-200/10"
+					className='bg-white/10 hover:bg-white/20 text-white border-gray-200/10'
 					onClick={() => setIsOpen(true)}
 				>
-					<Plus className="h-4 w-4 mr-2" />
+					<Plus className='h-4 w-4 mr-2' />
 					Add Game
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="border border-gray-200/10 bg-gray-950/95 backdrop-blur-sm text-white max-w-md">
+			<DialogContent className='border border-gray-200/10 bg-gray-950/95 backdrop-blur-sm text-white max-w-md'>
 				<DialogHeader>
-					<DialogTitle className="text-xl font-bold text-white">
+					<DialogTitle className='text-xl font-bold text-white'>
 						Add New Game
 					</DialogTitle>
-					<DialogDescription className="text-gray-400">
-						Add a new game to RoLinks. The game will be inactive until approved by administrators.
+					<DialogDescription className='text-gray-400'>
+						The game will be{" "}
+						<span className='bg-gradient-to-r from-red-500 to-red-700 text-transparent bg-clip-text'>
+							inactive
+						</span>{" "}
+						until approved.
 					</DialogDescription>
 				</DialogHeader>
 
 				{result ? (
-					<div className="space-y-4">
+					<div className='space-y-4'>
 						<div
 							className={`p-4 rounded-lg border ${
 								result.success
@@ -123,97 +127,98 @@ export default function AddGameButton() {
 									: "bg-red-500/10 border-red-500/30"
 							}`}
 						>
-							<div className="flex items-center gap-3">
+							<div className='flex items-center gap-3'>
 								{result.success ? (
-									<Check className="h-5 w-5 text-green-400 flex-shrink-0" />
+									<Check className='h-5 w-5 text-green-400 flex-shrink-0' />
 								) : (
-									<X className="h-5 w-5 text-red-400 flex-shrink-0" />
+									<X className='h-5 w-5 text-red-400 flex-shrink-0' />
 								)}
 								<p
-									className={
-										result.success
-											? "text-green-300"
-											: "text-red-300"
-									}
+									className={result.success ? "text-green-300" : "text-red-300"}
 								>
 									{result.message}
 								</p>
 							</div>
 						</div>
 
-						<div className="flex justify-end gap-3">
+						<div className='flex justify-end gap-3'>
 							<Button
-								type="button"
-								variant="outline"
+								type='button'
+								variant='outline'
 								onClick={handleClose}
-								className="bg-transparent border-gray-200/10 text-gray-400 hover:bg-white/5 hover:text-white"
+								className='bg-transparent border-gray-200/10 text-gray-400 hover:bg-white/5 hover:text-white'
 							>
 								Close
 							</Button>
 							{result.success && (
 								<Button
-									type="button"
+									type='button'
 									onClick={() => {
 										setResult(null)
 										setGameId("")
 									}}
-									className="bg-white/10 hover:bg-white/20 text-white border-gray-200/10"
+									className='bg-white/10 hover:bg-white/20 text-white border-gray-200/10'
 								>
-									<Plus className="h-4 w-4 mr-2" />
+									<Plus className='h-4 w-4 mr-2' />
 									Add Another
 								</Button>
 							)}
 						</div>
 					</div>
 				) : (
-					<form onSubmit={handleSubmit} className="space-y-4">
-						<div className="space-y-2">
-							<Label htmlFor="gameId" className="text-gray-300">
-								Roblox Game ID
+					<form onSubmit={handleSubmit} className='space-y-4'>
+						<div className='space-y-2'>
+							<Label htmlFor='gameId' className='text-gray-300'>
+								Enter Place ID
 							</Label>
 							<Input
-								id="gameId"
-								type="number"
-								placeholder="e.g. 920587237"
+								id='gameId'
+								type='text'
+								placeholder='920587237'
 								value={gameId}
 								onChange={(e) => setGameId(e.target.value)}
-								className="bg-gray-900/50 border-gray-200/10 text-white placeholder:text-gray-500"
+								className='bg-gray-900/50 border-gray-200/10 text-white placeholder:text-gray-500'
 								required
-								min="1"
 							/>
-							<p className="text-xs text-gray-500">
-								You can find the Game ID in the URL: roblox.com/games/<strong>123456789</strong>/game-name
+							<p className='text-xs text-gray-500'>
+								Example: https://roblox.com/games/
+								<strong className='bg-gradient-to-b from-gray-500 to-gray-600 text-transparent bg-clip-text'>
+									123456789
+								</strong>
+								/game-name
 							</p>
 						</div>
 
-						<div className="flex justify-end gap-3 pt-2">
+						<div className='flex justify-end gap-3 pt-2'>
 							<Button
-								type="button"
-								variant="outline"
+								type='button'
+								variant='outline'
 								onClick={handleClose}
 								disabled={isSubmitting}
-								className="bg-transparent border-gray-200/10 text-gray-400 hover:bg-white/5 hover:text-white disabled:opacity-50"
+								className='bg-transparent border-gray-200/10 text-gray-400 hover:bg-white/5 hover:text-white disabled:opacity-50'
 							>
 								Cancel
 							</Button>
 							<Button
-								type="submit"
-								disabled={isSubmitting || (!user && false) || (user && !gameId.trim())}
-								className="bg-green-600 hover:bg-green-700 text-white min-w-[120px] disabled:opacity-50"
+								type='submit'
+								disabled={
+									isSubmitting || (!user && false) || (user && !gameId.trim())
+								}
+								className='bg-green-600 hover:bg-green-700 text-white min-w-[120px] disabled:opacity-50'
 							>
 								{isSubmitting ? (
 									<>
-										<Loader2 className="h-4 w-4 mr-2 animate-spin" />
+										<Loader2 className='h-4 w-4 mr-2 animate-spin' />
 										Submitting...
 									</>
 								) : !user ? (
 									<>
-										<Check className="h-4 w-4 mr-2" />
+										<Check className='h-4 w-4 mr-2' />
 										Sign In & Add
 									</>
 								) : (
 									<>
-										<Check className="h-4 w-4 mr-2" />
+										<Check className='h-4 w-4 mr-2' />
 										Add Game
 									</>
 								)}

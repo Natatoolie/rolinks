@@ -3,6 +3,12 @@ import payload from "@/utils/getPayload"
 import { generateName } from "@/lib/serverNames"
 import { auth } from "@/utils/auth/auth"
 import { AddServerRequest, AddServerResponse, ServerResult } from "./types"
+import {
+	SERVER_CONFIG,
+	ERROR_MESSAGES,
+	SUCCESS_MESSAGES,
+	RATE_LIMIT_DESCRIPTIONS,
+} from "@/config/APIConfig"
 
 export async function POST(request: NextRequest) {
 	try {
@@ -12,7 +18,10 @@ export async function POST(request: NextRequest) {
 		})
 
 		if (!session) {
-			return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+			return NextResponse.json(
+				{ error: ERROR_MESSAGES.UNAUTHORIZED }, 
+				{ status: 401 }
+			)
 		}
 
 		const user = session.user
@@ -21,21 +30,21 @@ export async function POST(request: NextRequest) {
 
 		if (!gameId || !servers || !Array.isArray(servers)) {
 			return NextResponse.json(
-				{ error: "gameId and servers array are required" },
+				{ error: ERROR_MESSAGES.GAME_ID_AND_SERVERS_REQUIRED },
 				{ status: 400 }
 			)
 		}
 
-		// Basic rate limiting - max 10 servers per request
-		if (servers.length > 10) {
+		// Basic rate limiting - max servers per request
+		if (servers.length > SERVER_CONFIG.MAX_SERVERS_PER_REQUEST) {
 			return NextResponse.json(
-				{ error: "Maximum 10 servers allowed per request" },
+				{ error: ERROR_MESSAGES.MAX_SERVERS_EXCEEDED(SERVER_CONFIG.MAX_SERVERS_PER_REQUEST) },
 				{ status: 400 }
 			)
 		}
 
-		// Rate limiting - check recent submissions (last 5 minutes)
-		const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString()
+		// Rate limiting - check recent submissions
+		const rateLimitWindowAgo = new Date(Date.now() - SERVER_CONFIG.RATE_LIMIT_WINDOW).toISOString()
 		const recentServers = await payload.find({
 			collection: "servers",
 			where: {
@@ -47,7 +56,7 @@ export async function POST(request: NextRequest) {
 					},
 					{
 						createdAt: {
-							greater_than: fiveMinutesAgo,
+							greater_than: rateLimitWindowAgo,
 						},
 					},
 				],
@@ -55,12 +64,15 @@ export async function POST(request: NextRequest) {
 			user: user.id,
 		})
 
-		// Limit to 20 servers per 5 minutes per user
-		if (recentServers.totalDocs + servers.length > 20) {
+		// Check if user exceeds server creation rate limit
+		if (recentServers.totalDocs + servers.length > SERVER_CONFIG.MAX_SERVERS_PER_USER_WINDOW) {
 			return NextResponse.json(
 				{
-					error: "Rate limit exceeded. Maximum 20 servers per 5 minutes.",
-					retryAfter: 300, // 5 minutes in seconds
+					error: ERROR_MESSAGES.SERVER_RATE_LIMIT_EXCEEDED(
+						SERVER_CONFIG.MAX_SERVERS_PER_USER_WINDOW,
+						RATE_LIMIT_DESCRIPTIONS.FIVE_MINUTES
+					),
+					retryAfter: SERVER_CONFIG.RATE_LIMIT_RETRY_AFTER,
 				},
 				{ status: 429 }
 			)
@@ -88,7 +100,7 @@ export async function POST(request: NextRequest) {
 
 		if (!gameData.docs || gameData.docs.length === 0) {
 			return NextResponse.json(
-				{ error: "Game not found or not active" },
+				{ error: ERROR_MESSAGES.GAME_NOT_FOUND },
 				{ status: 404 }
 			)
 		}
@@ -104,7 +116,7 @@ export async function POST(request: NextRequest) {
 			if (!link) {
 				results.push({
 					success: false,
-					error: "Link is required",
+					error: ERROR_MESSAGES.LINK_REQUIRED,
 					input: serverData,
 				})
 				continue
@@ -135,7 +147,7 @@ export async function POST(request: NextRequest) {
 				console.error("Error creating server:", error)
 				results.push({
 					success: false,
-					error: "Failed to create server in database",
+					error: ERROR_MESSAGES.FAILED_TO_CREATE_SERVER,
 					input: serverData,
 				})
 			}
@@ -147,7 +159,7 @@ export async function POST(request: NextRequest) {
 
 		const response: AddServerResponse = {
 			success: true,
-			message: `${successCount} server(s) added successfully, ${failureCount} failed`,
+			message: SUCCESS_MESSAGES.SERVERS_ADDED(successCount, failureCount),
 			results,
 			summary: {
 				total: results.length,
@@ -165,7 +177,7 @@ export async function POST(request: NextRequest) {
 	} catch (error) {
 		console.error("API Error:", error)
 		return NextResponse.json(
-			{ error: "Internal server error" },
+			{ error: ERROR_MESSAGES.INTERNAL_SERVER_ERROR },
 			{ status: 500 }
 		)
 	}

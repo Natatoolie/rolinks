@@ -174,7 +174,7 @@ export interface Media {
  */
 export interface Game {
   id: string;
-  name: string;
+  name?: string | null;
   /**
    * Game ID (e.g. "17371261")
    */
