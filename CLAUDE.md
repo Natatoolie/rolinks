@@ -6,25 +6,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Development Server:**
 ```bash
-npm run dev          # Start Next.js development server with Turbopack
+bun run dev          # Start Next.js development server with Turbopack
 ```
 
 **Build & Production:**
 ```bash
-npm run build        # Build the application for production
-npm start           # Start production server
+bun run build        # Build the application for production
+bun start           # Start production server
 ```
 
 **Code Quality:**
 ```bash
-npm run lint        # Run ESLint to check code quality
+bun run lint        # Run ESLint to check code quality
 ```
 
 **Payload CMS:**
 ```bash
-npm run payload              # Access Payload CMS admin interface
-npm run generate:types       # Generate TypeScript types from Payload collections
-npm run generate:schema      # Generate schema using tsx scripts/generateSchema.ts
+bun run payload              # Access Payload CMS admin interface
+bun run generate:types       # Generate TypeScript types from Payload collections
+bun run generate:schema      # Generate schema using tsx scripts/generateSchema.ts
 ```
 
 ## Architecture Overview
