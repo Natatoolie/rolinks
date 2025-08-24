@@ -55,9 +55,7 @@ const FeaturesSection = () => {
 			y: 0,
 			scale: 1,
 			transition: {
-				type: "spring",
-				stiffness: 100,
-				damping: 15,
+				duration: 0.6,
 			},
 		},
 	}
@@ -100,7 +98,7 @@ const FeaturesSection = () => {
 							variants={cardVariants}
 							whileHover={{
 								y: -8,
-								transition: { duration: 0.3, type: "spring", stiffness: 400 },
+								transition: { duration: 0.3 },
 							}}
 							className='group relative'
 						>

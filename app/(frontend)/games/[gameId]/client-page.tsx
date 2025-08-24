@@ -155,7 +155,7 @@ export default function GamesClientPage({
 								{game.image ? (
 									<Image
 										src={game.image}
-										alt={game.name}
+										alt={game.name || "Game image"}
 										width={512}
 										height={512}
 										className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'

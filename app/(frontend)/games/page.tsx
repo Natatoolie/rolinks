@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import GamesPage from "@/components/games-page"
 import { fetchGames } from "@/utils/actions/fetchGames"
 
@@ -12,5 +13,9 @@ export default async function Games() {
 		const response = await fetchGames()
 		return response.docs
 	}
-	return <GamesPage games={await getGames()} />
+	return (
+		<Suspense fallback={<div>Loading games...</div>}>
+			<GamesPage games={await getGames()} />
+		</Suspense>
+	)
 }

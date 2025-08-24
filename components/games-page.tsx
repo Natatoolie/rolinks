@@ -41,7 +41,7 @@ export default function GamesPage({ games: gamesList }: { games: Game[] }) {
 	const sortedAndFilteredGames = useMemo(() => {
 		const filteredGames = gamesList.filter(
 			(game) =>
-				game.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				game.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				game.gameid.toString().includes(searchTerm)
 		)
 
@@ -50,8 +50,8 @@ export default function GamesPage({ games: gamesList }: { games: Game[] }) {
 
 			switch (sortCriteria) {
 				case "name":
-					aValue = a.name.toLowerCase()
-					bValue = b.name.toLowerCase()
+					aValue = (a.name || "").toLowerCase()
+					bValue = (b.name || "").toLowerCase()
 					break
 				case "serverCount":
 					aValue = a.serverCount || 0
@@ -256,7 +256,7 @@ export default function GamesPage({ games: gamesList }: { games: Game[] }) {
 									{game.image ? (
 										<Image
 											src={game.image}
-											alt={game.name}
+											alt={game.name || "Game image"}
 											fill
 											className='object-cover'
 										/>
@@ -313,7 +313,7 @@ export default function GamesPage({ games: gamesList }: { games: Game[] }) {
 										{game.image ? (
 											<Image
 												src={game.image}
-												alt={game.name}
+												alt={game.name || "Game image"}
 												width={256}
 												height={256}
 												className='w-full h-full object-cover'

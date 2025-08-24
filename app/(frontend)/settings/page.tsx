@@ -176,7 +176,6 @@ export default function SettingsPage() {
 					// Add activity log here
 				},
 			}
-			setExportData(userData)
 
 			// Create and download file
 			const dataStr = JSON.stringify(userData, null, 2)
@@ -314,7 +313,6 @@ export default function SettingsPage() {
 			y: 0,
 			transition: {
 				duration: 0.6,
-				ease: "easeOut",
 			},
 		},
 	}

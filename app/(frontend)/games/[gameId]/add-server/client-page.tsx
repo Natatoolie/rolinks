@@ -176,7 +176,7 @@ export default function AddServerClient({ game }: AddServerClientProps) {
 							{game.image ? (
 								<Image
 									src={game.image}
-									alt={game.name}
+									alt={game.name || "Game image"}
 									width={64}
 									height={64}
 									className='w-full h-full object-cover'

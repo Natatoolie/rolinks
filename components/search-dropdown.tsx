@@ -213,7 +213,7 @@ export default function SearchDropdown({
 				e.preventDefault()
 				if (selectedIndex >= 0 && results[selectedIndex]) {
 					handleSearch(
-						results[selectedIndex].name,
+						results[selectedIndex].name || "",
 						results[selectedIndex].id,
 						results[selectedIndex].image as string
 					)
@@ -322,7 +322,7 @@ export default function SearchDropdown({
 											<button
 												key={game.id}
 												onClick={() =>
-													handleSearch(game.name, game.id, game.image as string)
+													handleSearch(game.name || "", game.id, game.image as string)
 												}
 												className='w-full text-left p-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors flex items-center gap-3'
 											>
@@ -330,7 +330,7 @@ export default function SearchDropdown({
 													{game.image ? (
 														<Image
 															src={game.image}
-															alt={game.name}
+															alt={game.name || "Game image"}
 															width={32}
 															height={32}
 															className='w-full h-full object-cover'
@@ -431,7 +431,7 @@ export default function SearchDropdown({
 								<button
 									key={game.id}
 									onClick={() =>
-										handleSearch(game.name, game.id, game.image as string)
+										handleSearch(game.name || "", game.id, game.image as string)
 									}
 									className={cn(
 										"w-full text-left p-2 rounded-lg transition-colors flex items-center gap-3",
@@ -444,7 +444,7 @@ export default function SearchDropdown({
 										{game.image ? (
 											<Image
 												src={game.image}
-												alt={game.name}
+												alt={game.name || "Game image"}
 												width={32}
 												height={32}
 												className='w-full h-full object-cover'
@@ -457,7 +457,7 @@ export default function SearchDropdown({
 									</div>
 									<div className='flex-1 min-w-0'>
 										<div className='text-white font-medium truncate'>
-											{highlightMatch(game.name, query)}
+											{highlightMatch(game.name || "", query)}
 										</div>
 										<div className='text-xs text-gray-400'>
 											{game.serverCount?.toLocaleString() || 0} servers

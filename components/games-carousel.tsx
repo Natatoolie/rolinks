@@ -68,7 +68,7 @@ export default function GamesCarousel({ games }: { games: Game[] }) {
 						<GameCard
 							key={game.id}
 							id={game.id}
-							name={game.name}
+							name={game.name || ""}
 							serverCount={game.serverCount!}
 							gameid={game.gameid}
 							imageUrl={game.image as string}

@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 			)
 		}
 
-		const user = session.user
+		// const user = session.user
 		const body: RequestGameRequest = await request.json()
 		const { gameId } = body
 
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
 
 		// Create the game with isActive: false
 		try {
-			const createdGame = await payload.create({
+			await payload.create({
 				collection: "games",
 				data: {
 					name: undefined, // Temporary name, will be updated by hook

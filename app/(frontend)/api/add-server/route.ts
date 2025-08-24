@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
 			},
 			game: {
 				id: game.id,
-				name: game.name,
+				name: game.name || "",
 				gameid: game.gameid,
 			},
 		}
