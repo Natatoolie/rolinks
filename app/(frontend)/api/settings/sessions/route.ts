@@ -22,7 +22,9 @@ export async function GET(request: NextRequest) {
 				id: currentSessionId,
 				userId: session.user.id,
 				userAgent: userAgent,
-				ipAddress: request.ip || "Unknown",
+				ipAddress: request.headers.get("x-forwarded-for") || 
+					request.headers.get("x-real-ip") || 
+					"Unknown",
 				createdAt: session.session.createdAt,
 				updatedAt: session.session.updatedAt,
 				isCurrent: true,

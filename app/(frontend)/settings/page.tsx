@@ -35,15 +35,12 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
 	User,
-	Calendar,
-	Clock,
 	Monitor,
 	Smartphone,
 	LogOut,
 	Trash2,
 	Download,
 	Shield,
-	AlertTriangle,
 	Settings as SettingsIcon,
 } from "lucide-react"
 import Image from "next/image"
@@ -68,7 +65,6 @@ export default function SettingsPage() {
 	const [isDeletingAccount, setIsDeletingAccount] = useState(false)
 	const [isRemovingSessions, setIsRemovingSessions] = useState(false)
 	const [deleteConfirmation, setDeleteConfirmation] = useState("")
-	const [exportData, setExportData] = useState<object | null>(null)
 	const [isExporting, setIsExporting] = useState(false)
 
 	const user = session?.user

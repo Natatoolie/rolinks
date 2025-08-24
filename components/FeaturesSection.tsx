@@ -92,7 +92,7 @@ const FeaturesSection = () => {
 				viewport={{ once: true, margin: "0px 0px -200px 0px" }}
 				className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'
 			>
-				{features.map((feature, index) => {
+				{features.map((feature) => {
 					const IconComponent = feature.icon
 					return (
 						<motion.div

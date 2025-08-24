@@ -16,12 +16,17 @@ export default async function AddServerPage({ params }: AddServerPageProps) {
 	})
 
 	const gameId = (await params).gameId
+	const gameIdNumber = parseInt(gameId, 10)
 
 	if (!session) {
 		redirect(`/games/${gameId}`)
 	}
 
-	const game = await fetchGameData(gameId)
+	if (isNaN(gameIdNumber)) {
+		redirect("/games")
+	}
+
+	const game = await fetchGameData(gameIdNumber)
 
 	if (!game) {
 		redirect("/games")

@@ -1,12 +1,12 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback, useMemo } from "react"
-import { Search, X, Clock, TrendingUp, Server, Trash2 } from "lucide-react"
+import { useState, useEffect, useRef, useCallback } from "react"
+import { Search, X, Clock, TrendingUp, Server } from "lucide-react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { searchGames } from "@/utils/actions/searchGames"
 import { fetchGames } from "@/utils/actions/fetchGames"
-import { Game, Media } from "@/payload-types"
+import { Game } from "@/payload-types"
 
 // Cache for search results to avoid excessive API calls
 const searchCache = new Map<string, { results: Game[]; timestamp: number }>()
@@ -41,7 +41,7 @@ export default function SearchDropdown({
 
 	const searchRef = useRef<HTMLDivElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
-	const resultsRef = useRef<HTMLDivElement>(null)
+	const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
 	// Load trending games on component mount
 	useEffect(() => {
@@ -80,21 +80,7 @@ export default function SearchDropdown({
 		loadTrendingGames()
 	}, [])
 
-	// Debounced search function
-	const debounceSearch = useCallback(
-		(() => {
-			let timeoutId: NodeJS.Timeout
-			return (searchQuery: string) => {
-				clearTimeout(timeoutId)
-				timeoutId = setTimeout(() => {
-					performSearch(searchQuery)
-				}, 300)
-			}
-		})(),
-		[]
-	)
-
-	const performSearch = async (searchQuery: string) => {
+	const performSearch = useCallback(async (searchQuery: string) => {
 		if (!searchQuery.trim()) {
 			setResults([])
 			setIsLoading(false)
@@ -133,7 +119,17 @@ export default function SearchDropdown({
 		} finally {
 			setIsLoading(false)
 		}
-	}
+	}, [])
+
+	// Debounced search function
+	const debounceSearch = useCallback((searchQuery: string) => {
+		if (debounceTimeoutRef.current) {
+			clearTimeout(debounceTimeoutRef.current)
+		}
+		debounceTimeoutRef.current = setTimeout(() => {
+			performSearch(searchQuery)
+		}, 300)
+	}, [performSearch])
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value

@@ -1,7 +1,6 @@
 import React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Media } from "@/payload-types"
 
 type Props = {
 	id: string
@@ -11,7 +10,7 @@ type Props = {
 	imageUrl?: string
 }
 
-const GameCard = ({ id, name, serverCount, gameid, imageUrl }: Props) => {
+const GameCard = ({ id, name, gameid, imageUrl }: Props) => {
 	return (
 		<div
 			key={id}

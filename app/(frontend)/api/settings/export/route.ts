@@ -34,7 +34,9 @@ export async function POST(request: NextRequest) {
 					createdAt: session.session.createdAt,
 					updatedAt: session.session.updatedAt,
 					userAgent: request.headers.get("user-agent"),
-					ipAddress: request.ip || "unknown",
+					ipAddress: request.headers.get("x-forwarded-for") || 
+						request.headers.get("x-real-ip") || 
+						"unknown",
 				},
 			],
 			preferences: {

@@ -1,6 +1,6 @@
 "use client"
 import { motion } from "framer-motion"
-import { Twitter, MessageCircle, Youtube } from "lucide-react"
+import { Twitter, Youtube } from "lucide-react"
 import React from "react"
 
 const SocialSection = () => {
@@ -65,7 +65,7 @@ const SocialSection = () => {
 						url: "https://youtube.com/@rolinks",
 						delay: 0.2,
 					},
-				].map((social, index) => {
+				].map((social) => {
 					const IconComponent = social.icon
 					return (
 						<motion.div

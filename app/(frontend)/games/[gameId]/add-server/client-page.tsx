@@ -94,20 +94,21 @@ export default function AddServerClient({ game }: AddServerClientProps) {
 				}),
 			})
 
-			const data: AddServerResponse = await response.json()
-
 			if (response.status === 401) {
 				// Redirect to login
-
 				router.push("/")
+				return
 			}
 
 			if (response.status === 429) {
 				// Rate limited
-				alert(`Rate limit exceeded: ${data.error}`)
+				const errorData = await response.json()
+				alert(`Rate limit exceeded: ${errorData.message || errorData.error || 'Please try again later'}`)
 				setIsSubmitting(false)
 				return
 			}
+
+			const data: AddServerResponse = await response.json()
 
 			if (response.ok) {
 				setResults(data.results)
