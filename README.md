@@ -176,8 +176,6 @@ See `brain/design.md` for detailed design guidelines.
 Update these for production deployment:
 
 ```env
-NEXT_PUBLIC_SERVER_URL=https://your-domain.com
-BETTER_AUTH_URL=https://your-domain.com
 DATABASE_URI=your-production-mongodb-uri
 ```
 
