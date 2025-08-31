@@ -48,6 +48,10 @@ export default async function LandingPage() {
 				/>
 			</div>
 
+			<div className='w-full h-8 bg-black text-white flex items-center font-bold justify-center'>
+				This website is currently under construction.
+			</div>
+
 			<div className='relative z-10'>
 				<div className='container mx-auto px-4 py-8'>
 					{/* Header */}
